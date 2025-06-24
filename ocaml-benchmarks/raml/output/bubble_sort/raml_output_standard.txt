@@ -1,0 +1,37 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/longpham/Desktop/cost-profiler/raml-code/data_structures/lib/bubble_sort/bubble_sort.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function bubble_sort ...
+
+  Trying degree: 2[::(*); ::(*)]
+Group 1:
+[::(*)]
+Group 2:
+[]
+Indices and their corresponding LP variables: 
+Group 0:
+[::(*); ::(*)]; corresponding lp_var: 6
+Group 1:
+[::(*)]; corresponding lp_var: 7
+Group 2:
+[]; corresponding lp_var: 8
+
+
+  A bound for bubble_sort could not be derived. The linear program is infeasible.
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      0.03 seconds
+  #Constraints:  217
+
+====
+

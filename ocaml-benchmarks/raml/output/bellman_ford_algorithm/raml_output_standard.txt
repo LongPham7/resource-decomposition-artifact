@@ -1,0 +1,45 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/longpham/Desktop/cost-profiler/raml-code/data_structures/lib/bellman_ford_algorithm/bellman_ford_algorithm.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function bellman_ford_algorithm ...
+
+  Trying degree: 3[::(*, [::(*, *); ::(*, *)])][::(*, []); ::(*, [::(*, *)])][::(*, [::(*, *)]); ::(*, [])][::(*, []); ::(*, []); ::(*, [])]
+Group 1:
+[::(*, [::(*, *)])][::(*, []); ::(*, [])]
+Group 2:
+[::(*, [])]
+Group 3:
+[]
+Indices and their corresponding LP variables: 
+Group 0:
+[::(*, [::(*, *); ::(*, *)])]; corresponding lp_var: 11429
+[::(*, []); ::(*, [::(*, *)])]; corresponding lp_var: 11426
+[::(*, [::(*, *)]); ::(*, [])]; corresponding lp_var: 11428
+[::(*, []); ::(*, []); ::(*, [])]; corresponding lp_var: 11425
+Group 1:
+[::(*, [::(*, *)])]; corresponding lp_var: 11427
+[::(*, []); ::(*, [])]; corresponding lp_var: 11424
+Group 2:
+[::(*, [])]; corresponding lp_var: 11423
+Group 3:
+[]; corresponding lp_var: 11430
+
+
+  A bound for bellman_ford_algorithm could not be derived. The linear program is infeasible.
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        3
+  Run time:      2.60 seconds
+  #Constraints:  9989
+
+====
+

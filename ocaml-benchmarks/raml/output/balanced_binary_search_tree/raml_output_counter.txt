@@ -1,0 +1,79 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/binary_search_tree/binary_search_tree_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function balanced_binary_search_tree_main ...
+
+  Trying degree: 2
+([], [], ((*, []), ([], [::(*); ::(*)])))([], [], ((*, []), ([::(*)], [::(*)])))([], [], ((*, []), ([::(*); ::(*)], [])))([], [], ((*, [::(*)]), ([], [::(*)])))([], [], ((*, [::(*)]), ([::(*)], [])))([], [], ((*, [::(*); ::(*)]), ([], [])))([], [::(*)], ((*, []), ([], [::(*)])))([], [::(*)], ((*, []), ([::(*)], [])))([], [::(*)], ((*, [::(*)]), ([], [])))([::(*)], [], ((*, []), ([], [::(*)])))([::(*)], [], ((*, []), ([::(*)], [])))([::(*)], [], ((*, [::(*)]), ([], [])))([], [::(*); ::(*)], ((*, []), ([], [])))([::(*)], [::(*)], ((*, []), ([], [])))([::(*); ::(*)], [], ((*, []), ([], [])))
+Group 1:
+([], [], ((*, []), ([], [::(*)])))([], [], ((*, []), ([::(*)], [])))([], [], ((*, [::(*)]), ([], [])))([], [::(*)], ((*, []), ([], [])))([::(*)], [], ((*, []), ([], [])))
+Group 2:
+([], [], ((*, []), ([], [])))
+Indices and their corresponding LP variables: 
+Group 0:
+([], [], ((*, []), ([], [::(*); ::(*)]))); corresponding lp_var: 2447
+([], [], ((*, []), ([::(*)], [::(*)]))); corresponding lp_var: 2446
+([], [], ((*, []), ([::(*); ::(*)], []))); corresponding lp_var: 2445
+([], [], ((*, [::(*)]), ([], [::(*)]))); corresponding lp_var: 3914
+([], [], ((*, [::(*)]), ([::(*)], []))); corresponding lp_var: 3908
+([], [], ((*, [::(*); ::(*)]), ([], []))); corresponding lp_var: 3921
+([], [::(*)], ((*, []), ([], [::(*)]))); corresponding lp_var: 2271
+([], [::(*)], ((*, []), ([::(*)], []))); corresponding lp_var: 2270
+([], [::(*)], ((*, [::(*)]), ([], []))); corresponding lp_var: 3899
+([::(*)], [], ((*, []), ([], [::(*)]))); corresponding lp_var: 2437
+([::(*)], [], ((*, []), ([::(*)], []))); corresponding lp_var: 2436
+([::(*)], [], ((*, [::(*)]), ([], []))); corresponding lp_var: 3890
+([], [::(*); ::(*)], ((*, []), ([], []))); corresponding lp_var: 43
+([::(*)], [::(*)], ((*, []), ([], []))); corresponding lp_var: 2267
+([::(*); ::(*)], [], ((*, []), ([], []))); corresponding lp_var: 2433
+Group 1:
+([], [], ((*, []), ([], [::(*)]))); corresponding lp_var: 3915
+([], [], ((*, []), ([::(*)], []))); corresponding lp_var: 3909
+([], [], ((*, [::(*)]), ([], []))); corresponding lp_var: 3920
+([], [::(*)], ((*, []), ([], []))); corresponding lp_var: 3902
+([::(*)], [], ((*, []), ([], []))); corresponding lp_var: 3893
+Group 2:
+([], [], ((*, []), ([], []))); corresponding lp_var: 3926
+
+
+== balanced_binary_search_tree_main :
+
+  [int list; int list;
+                                           ('a * int list) *
+                                             ('b list * int list)] ->
+                                           bool list *
+                                             (('c list * int list) *
+                                               ('b list * int list))
+
+  Non-zero annotations of the argument:
+       3.5  <--  ([::(*)], [], ((*, [::(*)]), ([], [])))
+         1  <--  ([], [::(*)], ((*, []), ([], [::(*)])))
+         1  <--  ([], [::(*)], ((*, []), ([], [])))
+         6  <--  ([], [], ((*, []), ([], [])))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     6 + 1*L + 1*L*T + 3.5*M*Y
+   where
+     T is the number of ::-nodes of the 2nd component of the 2nd component of the 3rd component of the argument
+     Y is the number of ::-nodes of the 2nd component of the 1st component of the 3rd component of the argument
+     L is the number of ::-nodes of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      2.25 seconds
+  #Constraints:  4367
+
+====
+

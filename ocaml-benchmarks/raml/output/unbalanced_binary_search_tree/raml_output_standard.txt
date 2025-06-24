@@ -1,0 +1,58 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/binary_search_tree/binary_search_tree.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function unbalanced_binary_search_tree_main ...
+
+  Trying degree: 2
+([], [::(*); ::(*)])([::(*)], [::(*)])([::(*); ::(*)], [])
+Group 1:
+([], [::(*)])([::(*)], [])
+Group 2:
+([], [])
+Indices and their corresponding LP variables: 
+Group 0:
+([], [::(*); ::(*)]); corresponding lp_var: 7
+([::(*)], [::(*)]); corresponding lp_var: 280
+([::(*); ::(*)], []); corresponding lp_var: 336
+Group 1:
+([], [::(*)]); corresponding lp_var: 330
+([::(*)], []); corresponding lp_var: 339
+Group 2:
+([], []); corresponding lp_var: 676
+
+
+== unbalanced_binary_search_tree_main :
+
+  [int list; int list] -> bool list
+
+  Non-zero annotations of the argument:
+         1  <--  ([::(*); ::(*)], [])
+         1  <--  ([::(*)], [::(*)])
+         2  <--  ([::(*)], [])
+         2  <--  ([], [::(*)])
+         3  <--  ([], [])
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     3 + 2*L + 1*L*M + 1.5*M + 0.5*M^2
+   where
+     L is the number of ::-nodes of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      0.19 seconds
+  #Constraints:  749
+
+====
+

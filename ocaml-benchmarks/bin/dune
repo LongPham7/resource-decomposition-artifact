@@ -1,0 +1,6 @@
+(executable
+ (public_name data_structures)
+ (name main)
+ (libraries data_structures core core_unix.command_unix)
+ (preprocess
+  (pps ppx_jane)))

@@ -1,0 +1,72 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/bellman_ford_algorithm/bellman_ford_algorithm_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function bellman_ford_algorithm ...
+
+  Trying degree: 3([], (*, [::(*); ::(*); ::(*)]))([::(*, [])], (*, [::(*); ::(*)]))([::(*, [::(*, *)])], (*, [::(*)]))([::(*, []); ::(*, [])], (*, [::(*)]))([::(*, [::(*, *); ::(*, *)])], (*, []))([::(*, []); ::(*, [::(*, *)])], (*, []))([::(*, [::(*, *)]); ::(*, [])], (*, []))([::(*, []); ::(*, []); ::(*, [])], (*, []))
+Group 1:
+([], (*, [::(*); ::(*)]))([::(*, [])], (*, [::(*)]))([::(*, [::(*, *)])], (*, []))([::(*, []); ::(*, [])], (*, []))
+Group 2:
+([], (*, [::(*)]))([::(*, [])], (*, []))
+Group 3:
+([], (*, []))
+Indices and their corresponding LP variables: 
+Group 0:
+([], (*, [::(*); ::(*); ::(*)])); corresponding lp_var: 18424
+([::(*, [])], (*, [::(*); ::(*)])); corresponding lp_var: 18427
+([::(*, [::(*, *)])], (*, [::(*)])); corresponding lp_var: 18433
+([::(*, []); ::(*, [])], (*, [::(*)])); corresponding lp_var: 18429
+([::(*, [::(*, *); ::(*, *)])], (*, [])); corresponding lp_var: 18435
+([::(*, []); ::(*, [::(*, *)])], (*, [])); corresponding lp_var: 18431
+([::(*, [::(*, *)]); ::(*, [])], (*, [])); corresponding lp_var: 18434
+([::(*, []); ::(*, []); ::(*, [])], (*, [])); corresponding lp_var: 18430
+Group 1:
+([], (*, [::(*); ::(*)])); corresponding lp_var: 18423
+([::(*, [])], (*, [::(*)])); corresponding lp_var: 18426
+([::(*, [::(*, *)])], (*, [])); corresponding lp_var: 18432
+([::(*, []); ::(*, [])], (*, [])); corresponding lp_var: 18428
+Group 2:
+([], (*, [::(*)])); corresponding lp_var: 18422
+([::(*, [])], (*, [])); corresponding lp_var: 18425
+Group 3:
+([], (*, [])); corresponding lp_var: 18436
+
+
+== bellman_ford_algorithm :
+
+  [(int * (int * float) list) list;
+                                 'a * int list] ->
+                                 (int * distance) list * ('b list * int list)
+
+  Non-zero annotations of the argument:
+         4  <--  ([::(*, [::(*, *)])], (*, [::(*)]))
+         3  <--  ([::(*, [])], (*, [::(*)]))
+         2  <--  ([::(*, [])], (*, []))
+         2  <--  ([], (*, [::(*)]))
+         4  <--  ([], (*, []))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     4 + 4*L*M*Y + 2*M + 3*M*Y + 2*Y
+   where
+     Y is the number of ::-nodes of the 2nd component of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+     L is the maximal number of ::-nodes of the 2nd component in the ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        3
+  Run time:      6.56 seconds
+  #Constraints:  16209
+
+====
+

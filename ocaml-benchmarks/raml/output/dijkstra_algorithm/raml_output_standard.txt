@@ -1,0 +1,41 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/longpham/Desktop/cost-profiler/raml-code/data_structures/lib/dijkstra_algorithm/dijkstra_algorithm.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function dijkstra_algorithm ...
+
+  Trying degree: 33
+Group 1:
+2
+Group 2:
+1
+Group 3:
+0
+Indices and their corresponding LP variables: 
+Group 0:
+3; corresponding lp_var: 52512
+Group 1:
+2; corresponding lp_var: 52511
+Group 2:
+1; corresponding lp_var: 52510
+Group 3:
+0; corresponding lp_var: 52513
+
+
+  A bound for dijkstra_algorithm could not be derived. The linear program is infeasible.
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        3
+  Run time:      64.70 seconds
+  #Constraints:  43947
+
+====
+

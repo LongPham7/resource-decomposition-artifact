@@ -1,0 +1,87 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/binary_search_tree/binary_search_tree_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function unbalanced_binary_search_tree_main ...
+
+  Trying degree: 2
+([], [], (([], []), ([], [::(*); ::(*)]), *))([], [], (([], []), ([::(*)], [::(*)]), *))([], [], (([], []), ([::(*); ::(*)], []), *))([], [], (([], [::(*)]), ([], [::(*)]), *))([], [], (([], [::(*)]), ([::(*)], []), *))([], [], (([::(*)], []), ([], [::(*)]), *))([], [], (([::(*)], []), ([::(*)], []), *))([], [], (([], [::(*); ::(*)]), ([], []), *))([], [], (([::(*)], [::(*)]), ([], []), *))([], [], (([::(*); ::(*)], []), ([], []), *))([], [::(*)], (([], []), ([], [::(*)]), *))([], [::(*)], (([], []), ([::(*)], []), *))([], [::(*)], (([], [::(*)]), ([], []), *))([], [::(*)], (([::(*)], []), ([], []), *))([::(*)], [], (([], []), ([], [::(*)]), *))([::(*)], [], (([], []), ([::(*)], []), *))([::(*)], [], (([], [::(*)]), ([], []), *))([::(*)], [], (([::(*)], []), ([], []), *))([], [::(*); ::(*)], (([], []), ([], []), *))([::(*)], [::(*)], (([], []), ([], []), *))([::(*); ::(*)], [], (([], []), ([], []), *))
+Group 1:
+([], [], (([], []), ([], [::(*)]), *))([], [], (([], []), ([::(*)], []), *))([], [], (([], [::(*)]), ([], []), *))([], [], (([::(*)], []), ([], []), *))([], [::(*)], (([], []), ([], []), *))([::(*)], [], (([], []), ([], []), *))
+Group 2:
+([], [], (([], []), ([], []), *))
+Indices and their corresponding LP variables: 
+Group 0:
+([], [], (([], []), ([], [::(*); ::(*)]), *)); corresponding lp_var: 1278
+([], [], (([], []), ([::(*)], [::(*)]), *)); corresponding lp_var: 1277
+([], [], (([], []), ([::(*); ::(*)], []), *)); corresponding lp_var: 1276
+([], [], (([], [::(*)]), ([], [::(*)]), *)); corresponding lp_var: 1275
+([], [], (([], [::(*)]), ([::(*)], []), *)); corresponding lp_var: 1274
+([], [], (([::(*)], []), ([], [::(*)]), *)); corresponding lp_var: 1273
+([], [], (([::(*)], []), ([::(*)], []), *)); corresponding lp_var: 1272
+([], [], (([], [::(*); ::(*)]), ([], []), *)); corresponding lp_var: 1271
+([], [], (([::(*)], [::(*)]), ([], []), *)); corresponding lp_var: 1270
+([], [], (([::(*); ::(*)], []), ([], []), *)); corresponding lp_var: 1269
+([], [::(*)], (([], []), ([], [::(*)]), *)); corresponding lp_var: 1106
+([], [::(*)], (([], []), ([::(*)], []), *)); corresponding lp_var: 1105
+([], [::(*)], (([], [::(*)]), ([], []), *)); corresponding lp_var: 1104
+([], [::(*)], (([::(*)], []), ([], []), *)); corresponding lp_var: 1103
+([::(*)], [], (([], []), ([], [::(*)]), *)); corresponding lp_var: 1264
+([::(*)], [], (([], []), ([::(*)], []), *)); corresponding lp_var: 1263
+([::(*)], [], (([], [::(*)]), ([], []), *)); corresponding lp_var: 1262
+([::(*)], [], (([::(*)], []), ([], []), *)); corresponding lp_var: 1261
+([], [::(*); ::(*)], (([], []), ([], []), *)); corresponding lp_var: 43
+([::(*)], [::(*)], (([], []), ([], []), *)); corresponding lp_var: 1101
+([::(*); ::(*)], [], (([], []), ([], []), *)); corresponding lp_var: 1258
+Group 1:
+([], [], (([], []), ([], [::(*)]), *)); corresponding lp_var: 1284
+([], [], (([], []), ([::(*)], []), *)); corresponding lp_var: 1283
+([], [], (([], [::(*)]), ([], []), *)); corresponding lp_var: 1282
+([], [], (([::(*)], []), ([], []), *)); corresponding lp_var: 1281
+([], [::(*)], (([], []), ([], []), *)); corresponding lp_var: 1234
+([::(*)], [], (([], []), ([], []), *)); corresponding lp_var: 1279
+Group 2:
+([], [], (([], []), ([], []), *)); corresponding lp_var: 2438
+
+
+== unbalanced_binary_search_tree_main :
+
+  [int list; int list;
+                                             ('a list * int list) *
+                                               ('b list * int list) * 'c] ->
+                                             bool list *
+                                               (('a list * int list) *
+                                                 ('b list * int list) * 'c)
+
+  Non-zero annotations of the argument:
+         1  <--  ([::(*)], [], (([], [::(*)]), ([], []), *))
+         1  <--  ([], [::(*)], (([], []), ([], [::(*)]), *))
+         1  <--  ([::(*)], [], (([], []), ([], []), *))
+         1  <--  ([], [::(*)], (([], []), ([], []), *))
+         3  <--  ([], [], (([], []), ([], []), *))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     3 + 1*B*L + 1*L + 1*M + 1*M*R
+   where
+     B is the number of ::-nodes of the 2nd component of the 2nd component of the 3rd component of the argument
+     R is the number of ::-nodes of the 2nd component of the 1st component of the 3rd component of the argument
+     L is the number of ::-nodes of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      1.63 seconds
+  #Constraints:  2809
+
+====
+

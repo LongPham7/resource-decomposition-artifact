@@ -1,0 +1,45 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module kruskal_algorithm.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function kruskal_algorithm ...
+
+  Trying degree: 3[::(*, [::(*, *); ::(*, *)])][::(*, []); ::(*, [::(*, *)])][::(*, [::(*, *)]); ::(*, [])][::(*, []); ::(*, []); ::(*, [])]
+Group 1:
+[::(*, [::(*, *)])][::(*, []); ::(*, [])]
+Group 2:
+[::(*, [])]
+Group 3:
+[]
+Indices and their corresponding LP variables: 
+Group 0:
+[::(*, [::(*, *); ::(*, *)])]; corresponding lp_var: 12577
+[::(*, []); ::(*, [::(*, *)])]; corresponding lp_var: 12574
+[::(*, [::(*, *)]); ::(*, [])]; corresponding lp_var: 12576
+[::(*, []); ::(*, []); ::(*, [])]; corresponding lp_var: 12573
+Group 1:
+[::(*, [::(*, *)])]; corresponding lp_var: 12575
+[::(*, []); ::(*, [])]; corresponding lp_var: 12572
+Group 2:
+[::(*, [])]; corresponding lp_var: 12571
+Group 3:
+[]; corresponding lp_var: 12578
+
+
+  A bound for kruskal_algorithm could not be derived. The linear program is infeasible.
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        3
+  Run time:      2.92 seconds
+  #Constraints:  11439
+
+====
+

@@ -1,0 +1,84 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/splay_tree/splay_tree_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function splay_tree_main ...
+
+  Trying degree: 2([], [], (([], []), ([], [::(*); ::(*)])))([], [], (([], []), ([::(*)], [::(*)])))([], [], (([], []), ([::(*); ::(*)], [])))([], [], (([], [::(*)]), ([], [::(*)])))([], [], (([], [::(*)]), ([::(*)], [])))([], [], (([::(*)], []), ([], [::(*)])))([], [], (([::(*)], []), ([::(*)], [])))([], [], (([], [::(*); ::(*)]), ([], [])))([], [], (([::(*)], [::(*)]), ([], [])))([], [], (([::(*); ::(*)], []), ([], [])))([], [::(*)], (([], []), ([], [::(*)])))([], [::(*)], (([], []), ([::(*)], [])))([], [::(*)], (([], [::(*)]), ([], [])))([], [::(*)], (([::(*)], []), ([], [])))([::(*)], [], (([], []), ([], [::(*)])))([::(*)], [], (([], []), ([::(*)], [])))([::(*)], [], (([], [::(*)]), ([], [])))([::(*)], [], (([::(*)], []), ([], [])))([], [::(*); ::(*)], (([], []), ([], [])))([::(*)], [::(*)], (([], []), ([], [])))([::(*); ::(*)], [], (([], []), ([], [])))
+Group 1:
+([], [], (([], []), ([], [::(*)])))([], [], (([], []), ([::(*)], [])))([], [], (([], [::(*)]), ([], [])))([], [], (([::(*)], []), ([], [])))([], [::(*)], (([], []), ([], [])))([::(*)], [], (([], []), ([], [])))
+Group 2:
+([], [], (([], []), ([], [])))
+Indices and their corresponding LP variables: 
+Group 0:
+([], [], (([], []), ([], [::(*); ::(*)]))); corresponding lp_var: 7546
+([], [], (([], []), ([::(*)], [::(*)]))); corresponding lp_var: 7545
+([], [], (([], []), ([::(*); ::(*)], []))); corresponding lp_var: 7544
+([], [], (([], [::(*)]), ([], [::(*)]))); corresponding lp_var: 7543
+([], [], (([], [::(*)]), ([::(*)], []))); corresponding lp_var: 7542
+([], [], (([::(*)], []), ([], [::(*)]))); corresponding lp_var: 7541
+([], [], (([::(*)], []), ([::(*)], []))); corresponding lp_var: 7540
+([], [], (([], [::(*); ::(*)]), ([], []))); corresponding lp_var: 7539
+([], [], (([::(*)], [::(*)]), ([], []))); corresponding lp_var: 7538
+([], [], (([::(*); ::(*)], []), ([], []))); corresponding lp_var: 7537
+([], [::(*)], (([], []), ([], [::(*)]))); corresponding lp_var: 7061
+([], [::(*)], (([], []), ([::(*)], []))); corresponding lp_var: 7060
+([], [::(*)], (([], [::(*)]), ([], []))); corresponding lp_var: 7059
+([], [::(*)], (([::(*)], []), ([], []))); corresponding lp_var: 7058
+([::(*)], [], (([], []), ([], [::(*)]))); corresponding lp_var: 7532
+([::(*)], [], (([], []), ([::(*)], []))); corresponding lp_var: 7531
+([::(*)], [], (([], [::(*)]), ([], []))); corresponding lp_var: 7530
+([::(*)], [], (([::(*)], []), ([], []))); corresponding lp_var: 7529
+([], [::(*); ::(*)], (([], []), ([], []))); corresponding lp_var: 57
+([::(*)], [::(*)], (([], []), ([], []))); corresponding lp_var: 7056
+([::(*); ::(*)], [], (([], []), ([], []))); corresponding lp_var: 7526
+Group 1:
+([], [], (([], []), ([], [::(*)]))); corresponding lp_var: 7552
+([], [], (([], []), ([::(*)], []))); corresponding lp_var: 7551
+([], [], (([], [::(*)]), ([], []))); corresponding lp_var: 7550
+([], [], (([::(*)], []), ([], []))); corresponding lp_var: 7549
+([], [::(*)], (([], []), ([], []))); corresponding lp_var: 7502
+([::(*)], [], (([], []), ([], []))); corresponding lp_var: 7547
+Group 2:
+([], [], (([], []), ([], []))); corresponding lp_var: 14768
+
+
+== splay_tree_main :
+
+  [int list; int list;
+                          ('a list * int list) * ('b list * int list)] ->
+                          (bool list * splay_tree) *
+                            (('a list * int list) * ('b list * int list))
+
+  Non-zero annotations of the argument:
+         2  <--  ([::(*)], [], (([], [::(*)]), ([], [])))
+         2  <--  ([], [::(*)], (([], []), ([], [::(*)])))
+         2  <--  ([::(*)], [], (([], []), ([], [])))
+         1  <--  ([], [::(*)], (([], []), ([], [])))
+         4  <--  ([], [], (([], []), ([], [])))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     4 + 2*B*L + 1*L + 2*M + 2*M*R
+   where
+     B is the number of ::-nodes of the 2nd component of the 2nd component of the 3rd component of the argument
+     R is the number of ::-nodes of the 2nd component of the 1st component of the 3rd component of the argument
+     L is the number of ::-nodes of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      11.13 seconds
+  #Constraints:  18860
+
+====
+

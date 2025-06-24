@@ -1,0 +1,57 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/splay_tree/splay_tree.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function splay_tree_main ...
+
+  Trying degree: 2([], [::(*); ::(*)])([::(*)], [::(*)])([::(*); ::(*)], [])
+Group 1:
+([], [::(*)])([::(*)], [])
+Group 2:
+([], [])
+Indices and their corresponding LP variables: 
+Group 0:
+([], [::(*); ::(*)]); corresponding lp_var: 13
+([::(*)], [::(*)]); corresponding lp_var: 3546
+([::(*); ::(*)], []); corresponding lp_var: 3807
+Group 1:
+([], [::(*)]); corresponding lp_var: 3801
+([::(*)], []); corresponding lp_var: 3810
+Group 2:
+([], []); corresponding lp_var: 7421
+
+
+== splay_tree_main :
+
+  [int list; int list] -> bool list * splay_tree
+
+  Non-zero annotations of the argument:
+         1  <--  ([::(*); ::(*)], [])
+         1  <--  ([::(*)], [::(*)])
+         4  <--  ([::(*)], [])
+         3  <--  ([], [::(*)])
+         3  <--  ([], [])
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     3 + 3*L + 1*L*M + 3.5*M + 0.5*M^2
+   where
+     L is the number of ::-nodes of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      3.09 seconds
+  #Constraints:  8909
+
+====
+

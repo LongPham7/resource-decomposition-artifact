@@ -1,0 +1,56 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/quicksort/quicksort_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function quicksort ...
+
+  Trying degree: 2([], ([::(*); ::(*)], *))([::(*)], ([::(*)], *))([::(*); ::(*)], ([], *))
+Group 1:
+([], ([::(*)], *))([::(*)], ([], *))
+Group 2:
+([], ([], *))
+Indices and their corresponding LP variables: 
+Group 0:
+([], ([::(*); ::(*)], *)); corresponding lp_var: 14
+([::(*)], ([::(*)], *)); corresponding lp_var: 13
+([::(*); ::(*)], ([], *)); corresponding lp_var: 12
+Group 1:
+([], ([::(*)], *)); corresponding lp_var: 16
+([::(*)], ([], *)); corresponding lp_var: 15
+Group 2:
+([], ([], *)); corresponding lp_var: 17
+
+
+== quicksort :
+
+  [int list; int list * 'a] -> int list * (int list * 'a)
+
+  Non-zero annotations of the argument:
+         3  <--  ([::(*)], ([::(*)], *))
+       0.5  <--  ([], ([::(*)], *))
+         1  <--  ([], ([], *))
+
+  Non-zero annotations of result:
+       0.5  <--  ([], ([], *))
+
+  Simplified bound:
+     1 + 0.5*L + 3*L*M
+   where
+     L is the number of ::-nodes of the 1st component of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      0.26 seconds
+  #Constraints:  860
+
+====
+

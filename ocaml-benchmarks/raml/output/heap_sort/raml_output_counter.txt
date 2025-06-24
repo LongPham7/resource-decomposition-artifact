@@ -1,0 +1,73 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/heap_sort/heap_sort_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function heap_sort ...
+
+  Trying degree: 2([], (([], []), ([], [::(*); ::(*)])))([], (([], []), ([::(*)], [::(*)])))([], (([], []), ([::(*); ::(*)], [])))([], (([], [::(*)]), ([], [::(*)])))([], (([], [::(*)]), ([::(*)], [])))([], (([::(*)], []), ([], [::(*)])))([], (([::(*)], []), ([::(*)], [])))([], (([], [::(*); ::(*)]), ([], [])))([], (([::(*)], [::(*)]), ([], [])))([], (([::(*); ::(*)], []), ([], [])))([::(*)], (([], []), ([], [::(*)])))([::(*)], (([], []), ([::(*)], [])))([::(*)], (([], [::(*)]), ([], [])))([::(*)], (([::(*)], []), ([], [])))([::(*); ::(*)], (([], []), ([], [])))
+Group 1:
+([], (([], []), ([], [::(*)])))([], (([], []), ([::(*)], [])))([], (([], [::(*)]), ([], [])))([], (([::(*)], []), ([], [])))([::(*)], (([], []), ([], [])))
+Group 2:
+([], (([], []), ([], [])))
+Indices and their corresponding LP variables: 
+Group 0:
+([], (([], []), ([], [::(*); ::(*)]))); corresponding lp_var: 6994
+([], (([], []), ([::(*)], [::(*)]))); corresponding lp_var: 6996
+([], (([], []), ([::(*); ::(*)], []))); corresponding lp_var: 6997
+([], (([], [::(*)]), ([], [::(*)]))); corresponding lp_var: 6999
+([], (([], [::(*)]), ([::(*)], []))); corresponding lp_var: 7000
+([], (([::(*)], []), ([], [::(*)]))); corresponding lp_var: 7003
+([], (([::(*)], []), ([::(*)], []))); corresponding lp_var: 7004
+([], (([], [::(*); ::(*)]), ([], []))); corresponding lp_var: 7001
+([], (([::(*)], [::(*)]), ([], []))); corresponding lp_var: 7005
+([], (([::(*); ::(*)], []), ([], []))); corresponding lp_var: 7006
+([::(*)], (([], []), ([], [::(*)]))); corresponding lp_var: 7008
+([::(*)], (([], []), ([::(*)], []))); corresponding lp_var: 7009
+([::(*)], (([], [::(*)]), ([], []))); corresponding lp_var: 7010
+([::(*)], (([::(*)], []), ([], []))); corresponding lp_var: 7011
+([::(*); ::(*)], (([], []), ([], []))); corresponding lp_var: 7012
+Group 1:
+([], (([], []), ([], [::(*)]))); corresponding lp_var: 6993
+([], (([], []), ([::(*)], []))); corresponding lp_var: 6995
+([], (([], [::(*)]), ([], []))); corresponding lp_var: 6998
+([], (([::(*)], []), ([], []))); corresponding lp_var: 7002
+([::(*)], (([], []), ([], []))); corresponding lp_var: 7007
+Group 2:
+([], (([], []), ([], []))); corresponding lp_var: 7016
+
+
+== heap_sort :
+
+  [int list; ('a list * int list) * ('b list * int list)] ->
+                    int list * (('a list * int list) * ('b list * int list))
+
+  Non-zero annotations of the argument:
+         1  <--  ([::(*)], (([], [::(*)]), ([], [])))
+         1  <--  ([::(*)], (([], []), ([], [::(*)])))
+         4  <--  ([::(*)], (([], []), ([], [])))
+         7  <--  ([], (([], []), ([], [])))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     7 + 4*M + 1*M*T + 1*M*Y
+   where
+     T is the number of ::-nodes of the 2nd component of the 2nd component of the 2nd component of the argument
+     Y is the number of ::-nodes of the 2nd component of the 1st component of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      3.17 seconds
+  #Constraints:  5998
+
+====
+

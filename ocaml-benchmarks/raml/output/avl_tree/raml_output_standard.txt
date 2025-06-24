@@ -1,0 +1,40 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/avl_tree/avl_tree.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function avl_tree_main ...
+
+  Trying degree: 2([], [::(*); ::(*)])([::(*)], [::(*)])([::(*); ::(*)], [])
+Group 1:
+([], [::(*)])([::(*)], [])
+Group 2:
+([], [])
+Indices and their corresponding LP variables: 
+Group 0:
+([], [::(*); ::(*)]); corresponding lp_var: 7
+([::(*)], [::(*)]); corresponding lp_var: 280
+([::(*); ::(*)], []); corresponding lp_var: 976
+Group 1:
+([], [::(*)]); corresponding lp_var: 970
+([::(*)], []); corresponding lp_var: 979
+Group 2:
+([], []); corresponding lp_var: 8854
+
+
+  A bound for avl_tree_main could not be derived. The linear program is infeasible.
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      2.85 seconds
+  #Constraints:  8300
+
+====
+

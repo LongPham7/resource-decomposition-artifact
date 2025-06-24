@@ -1,0 +1,75 @@
+The Python library for py.ml is loaded
+
+Resource Aware ML, Version 1.5.0, June 2020
+
+Typechecking module /home/ubuntu/cost-profiler/raml-code/data_structures/lib/huffman_code/huffman_code_counter.ml ...
+  Typecheck successful.
+  Stack-based typecheck successful.
+
+Grouping of indices in the descending order of priorities/degrees: 
+Group 0:
+Analyzing function huffman_code ...
+
+  Trying degree: 2([], (([], []), ([], [::(*); ::(*)])))([], (([], []), ([::(*)], [::(*)])))([], (([], []), ([::(*); ::(*)], [])))([], (([], [::(*)]), ([], [::(*)])))([], (([], [::(*)]), ([::(*)], [])))([], (([::(*)], []), ([], [::(*)])))([], (([::(*)], []), ([::(*)], [])))([], (([], [::(*); ::(*)]), ([], [])))([], (([::(*)], [::(*)]), ([], [])))([], (([::(*); ::(*)], []), ([], [])))([::(*, *)], (([], []), ([], [::(*)])))([::(*, *)], (([], []), ([::(*)], [])))([::(*, *)], (([], [::(*)]), ([], [])))([::(*, *)], (([::(*)], []), ([], [])))([::(*, *); ::(*, *)], (([], []), ([], [])))
+Group 1:
+([], (([], []), ([], [::(*)])))([], (([], []), ([::(*)], [])))([], (([], [::(*)]), ([], [])))([], (([::(*)], []), ([], [])))([::(*, *)], (([], []), ([], [])))
+Group 2:
+([], (([], []), ([], [])))
+Indices and their corresponding LP variables: 
+Group 0:
+([], (([], []), ([], [::(*); ::(*)]))); corresponding lp_var: 12662
+([], (([], []), ([::(*)], [::(*)]))); corresponding lp_var: 12664
+([], (([], []), ([::(*); ::(*)], []))); corresponding lp_var: 12665
+([], (([], [::(*)]), ([], [::(*)]))); corresponding lp_var: 12667
+([], (([], [::(*)]), ([::(*)], []))); corresponding lp_var: 12668
+([], (([::(*)], []), ([], [::(*)]))); corresponding lp_var: 12671
+([], (([::(*)], []), ([::(*)], []))); corresponding lp_var: 12672
+([], (([], [::(*); ::(*)]), ([], []))); corresponding lp_var: 12669
+([], (([::(*)], [::(*)]), ([], []))); corresponding lp_var: 12673
+([], (([::(*); ::(*)], []), ([], []))); corresponding lp_var: 12674
+([::(*, *)], (([], []), ([], [::(*)]))); corresponding lp_var: 12676
+([::(*, *)], (([], []), ([::(*)], []))); corresponding lp_var: 12677
+([::(*, *)], (([], [::(*)]), ([], []))); corresponding lp_var: 12678
+([::(*, *)], (([::(*)], []), ([], []))); corresponding lp_var: 12679
+([::(*, *); ::(*, *)], (([], []), ([], []))); corresponding lp_var: 12680
+Group 1:
+([], (([], []), ([], [::(*)]))); corresponding lp_var: 12661
+([], (([], []), ([::(*)], []))); corresponding lp_var: 12663
+([], (([], [::(*)]), ([], []))); corresponding lp_var: 12666
+([], (([::(*)], []), ([], []))); corresponding lp_var: 12670
+([::(*, *)], (([], []), ([], []))); corresponding lp_var: 12675
+Group 2:
+([], (([], []), ([], []))); corresponding lp_var: 12684
+
+
+== huffman_code :
+
+  [(int * int) list;
+                       ('a list * int list) * ('b list * int list)] ->
+                       code_tree *
+                         (('a list * int list) * ('b list * int list))
+
+  Non-zero annotations of the argument:
+         5  <--  ([::(*, *)], (([], [::(*)]), ([], [])))
+        10  <--  ([::(*, *)], (([], []), ([], [::(*)])))
+         9  <--  ([::(*, *)], (([], []), ([], [])))
+         7  <--  ([], (([], []), ([], [])))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     7 + 9*M + 10*M*T + 5*M*Y
+   where
+     T is the number of ::-nodes of the 2nd component of the 2nd component of the 2nd component of the argument
+     Y is the number of ::-nodes of the 2nd component of the 1st component of the 2nd component of the argument
+     M is the number of ::-nodes of the 1st component of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      6.70 seconds
+  #Constraints:  10996
+
+====
+
