@@ -64,7 +64,7 @@ On the other hand, the data-driven part runs Bayesian inference to statistically
 infer a symbolic bound of a resource component using a dataset of the resource
 component's measurements.
 
-We consider the benchmark \mergesort{} implemented in OCaml.
+We consider the benchmark program \mergesort{} implemented in OCaml.
 %
 The resource metric of interest is the number of function calls (including all
 recursive calls and helper functions).
@@ -72,14 +72,17 @@ recursive calls and helper functions).
 Our goal is to infer an asymptotically tight $O (n \log n)$ (with concrete
 coefficients) cost bound of \mergesort{}.
 
-\paragraph{AARA}
+\paragraph{Original program}
 
-Inside the Docker container, the current working directory is
+Inside the Docker container, the current working directory should be
 \begin{verbatim}
 # pwd
 /home/ocaml-benchmarks
 \end{verbatim}
 %
+This directory contains the OCaml source code of all benchmark programs used in
+\labelcref{introduction:instantiation:1,introduction:instantiation:2}.
+
 Let $P(x)$ denote an original program of \mergesort{}.
 %
 To view the source code of the original program $P(x)$, run
@@ -90,7 +93,9 @@ To view the source code of the original program $P(x)$, run
 This OCaml code is annotated with the construct \texttt{Raml.tick 1.0} to
 specify resource usage: it increments a cost counter by 1.0.
 %
-This construct is inserted at the start of each function in the source code.
+This construct is inserted at the start of every function in the source code.
+
+\paragraph{Static analysis on the original program}
 
 RaML can infer a polynomial bound for \mergesort{}.
 %
@@ -100,48 +105,252 @@ To invoke RaML on \mergesort{}, run a python script:
 \end{verbatim}
 %
 It prints out the inference result:
-\begin{verbatim}
-== merge_sort :
+\begin{Verbatim}[fontsize=\footnotesize]
+  == merge_sort :
 
   int list -> int list
 
   Non-zero annotations of the argument:
-         7  <--  [::(*); ::(*)]
-         1  <--  [::(*)]
-         1  <--  []
+  7  <--  [::(*); ::(*)]
+  1  <--  [::(*)]
+  1  <--  []
 
   Non-zero annotations of result:
 
   Simplified bound:
-     1 - 2.5*M + 3.5*M^2
-   where
-     M is the number of ::-nodes of the argument
+  1 - 2.5*M + 3.5*M^2
+  where
+  M is the number of ::-nodes of the argument
 
---
+  --
   Mode:          upper
   Metric:        ticks
   Degree:        2
   Run time:      0.13 seconds
   #Constraints:  777
 
-====
-\end{verbatim}
+  ====
+\end{Verbatim}
 %
-In the middle of this displayed inference result, we can find a quadratic cost
+In the middle of the displayed inference result, we can find a quadratic cost
 bound of \mergesort{} inferred by RaML:
 \begin{equation}
-  1 - 2.5 m + 3.5 m^2,
+  1 - 2.5 n + 3.5 n^2,
 \end{equation}
-where $m$ is the length of the input list.
+where $n$ is the length of the input list.
 %
 This quadratic bound is sound (i.e., it is a valid worst-case cost bound for all
 input sizes).
 %
 But it is not an asymptotically tight $O(n \log n)$ bound of \mergesort{}.
 
-\paragraph{Resource decomposition}
+\paragraph{Resource-decomposed and resource-guarded programs}
 
 To obtain an asymptotically tighter cost bound of \mergesort{}, we integrate
 AARA and Bayesian data-driven analysis via resource decomposition.
 %
-A resource 
+We set a resource component to be the recursion depth of the function
+\texttt{merge\_sort} in the original program $P(x)$.
+%
+To specify this resource component, the original program $P(x)$ is annotated
+with the construct \texttt{Raml.mark}, resulting in a resource-decomposed
+program $P_{\mathrm{rd}}(x)$.
+%
+To view the source code of the resource-decomposed program $P_{\mathrm{rd}}(x)$,
+run
+\begin{verbatim}
+# cat lib/merge_sort/merge_sort_data_collection.ml
+\end{verbatim}
+%
+A recursion-depth bound of the function \texttt{merge\_sort} will later be
+inferred by Bayesian data-driven analysis.
+
+The original program $P(x)$ is transformed to a resource-guarded program
+$P_{\mathrm{rg}}(x, r)$, which has two inputs: the original input $x$ and a
+resource guard $r$.
+%
+The resource guard $r$ is a numeric variable that tracks the recursion depth of
+the function \texttt{merge\_sort}.
+%
+To view the code of the resource-guarded program $P_{\mathrm{rg}}(x, r)$, run
+\begin{verbatim}
+# cat lib/merge_sort/merge_sort_counter.ml
+\end{verbatim}
+
+\paragraph{Static analysis on the resource-guarded program}
+
+To infer an overall cost bound of the resource-guarded program
+$P_{\mathrm{rg}}(x, r)$, we run RaML:
+\begin{verbatim}
+# python3 raml/run_raml.py benchmark merge_sort counter
+\end{verbatim}
+%
+It prints out the inference result:
+\begin{Verbatim}[fontsize=\footnotesize]
+  == merge_sort :
+
+  [int list; int list * 'a] -> int list * (int list * 'a)
+
+  Non-zero annotations of the argument:
+  3.5  <--  ([::(*)], ([::(*)], *))
+  1  <--  ([], ([], *))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+  1 + 3.5*L*M
+  where
+  L is the number of ::-nodes of the 1st component of the 2nd component of the argument
+  M is the number of ::-nodes of the 1st component of the argument
+
+  --
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      0.28 seconds
+  #Constraints:  1192
+
+  ====
+\end{Verbatim}
+%
+Here, an inferred cost bound is
+\begin{equation}
+  1 + 3.5 n \cdot r,
+\end{equation}
+where $n$ is the length of the original input list and $r$ is the value of the
+resource guard.
+%
+Also, the analysis time by RaML is \qty{0.28}{\second}.
+%
+In the last column of Table~1 in the paper, the reported analysis time for
+\mergesort{} (the first row) is \qty{0.4}{\second}.
+%
+On your local machine, RaML's analysis time should not deviate significantly
+from this reported analysis time.
+
+\paragraph{Bayesian analysis on the resource-decomposed program}
+
+We perform Bayesian data-driven resource analysis on the resource-decomposed
+program $P_{\mathrm{rd}}(x)$ to infer a recursion-depth bound of the function
+\texttt{merge\_sort}.
+
+First, switch the working directory to \texttt{/home/experiment}:
+\begin{verbatim}
+# cd ../experiment
+\end{verbatim}
+%
+This directory contains Python code for creating datasets of resource-component
+measurements, analyzing these datasets by Bayesian inference, and producing
+plots of inferred bounds.
+
+We run the resource-decomposed program $P_{\mathrm{rd}}(x)$ on many input lists
+to create a dataset $\calD$ of input sizes and recursion depths.
+%
+To this end, run
+\begin{verbatim}
+# python3 -m runtime_data_generation.runtime_data_generation benchmark quicksort
+\end{verbatim}
+%
+This command randomly generates many integer lists (of varying lengths), where
+integers are drawn uniformly at random from a broad interval.
+%
+The command then executes the OCaml resource-decomposed program
+$P_{\mathrm{rd}}(x)$ of \mergesort{} on these lists, recording the input sizes
+and recursion depths.
+%
+The generated dataset $\calD$ is stored in this JSON file:
+\begin{verbatim}
+/home/experiment/bin/merge_sort/bucket1/runtime_cost_data/runtime_cost_data.json
+\end{verbatim}
+
+We next perform Bayesian inference by running
+\begin{verbatim}
+# python3 -m run_model benchmark merge_sort
+\end{verbatim}
+%
+This command invokes a probabilistic programming language
+Stan~\citep{Carpenter2017}.
+%
+The inference engine of Stan performs a sampling-based probabilistic inference
+algorithm, drawing a large number (specifically 44,000) of posterior
+recursion-depth bounds of \mergesort{}.
+
+The command takes approximately \qty{45}{\second} to run for the first time.
+%
+The bulk of the analysis time is spent in building efficient machine code for
+Bayesian inference---Bayesian inference itself only takes around
+\qty{4.5}{\second}.
+%
+The posterior samples drawn by a sampling algorithm (and other information such
+as its analysis time) are stored in this JSON file:
+\begin{verbatim}
+/home/experiment/bin/merge_sort/bucket1/counter0/model0/inference_result.json
+\end{verbatim}
+
+\paragraph{Display analysis time}
+
+To print out Bayesian inference's analysis time, run
+\begin{verbatim}
+# python3 -m run_analysis time
+\end{verbatim}
+%
+It displays a table of Bayesian inference's analysis time for all 13 benchmarks
+in \labelcref{introduction:instantiation:1}, including \mergesort{}, and also
+the benchmark \quicksorttiml{} used in \labelcref{introduction:instantiation:3}.
+%
+The table should look like
+\begin{verbatim}
+Benchmark                     Counter Analysis Time (s) Iterations Chains
+merge_sort                          0              4.45      11000      4
+...
+\end{verbatim}
+
+In the paper, Bayesian inference's analysis time is reported in the
+second-to-last column of Table~1.
+%
+On your local machine, the analysis time for \mergesort{} should not deviate
+significantly from the analysis time reported in the paper, namely
+\qty{6.0}{\second}.
+
+\paragraph{Display soundness percentages}
+
+To print out the percentages of sound recursion-depth bounds inferred by
+Bayesian inference, run
+\begin{verbatim}
+# python3 -m run_analysis soundness all
+\end{verbatim}
+%
+The command prints out a table of soundness percentages for all 13 benchmarks in
+\labelcref{introduction:instantiation:1} and the benchmark \quicksorttiml{} in
+\labelcref{introduction:instantiation:3}.
+%
+The table should look like
+\begin{verbatim}
+Benchmark                     Conv. AARA   Counter Sound Complexity  Sound Bounds
+merge_sort                    Wrong Degree       0           100.0%         56.1%
+...
+\end{verbatim}
+
+In the paper, the soundness percentages are reported in the third-to-last and
+fourth-to-last columns of Table~1.
+%
+On your local machine, you should get the exact soundness percentages of
+\mergesort{} of 100\% (for asymptotic complexity) and  56.1\% (for coefficients)
+because we have fixed the seeds of all pseudo-random number generators used in
+the artifact.
+
+The soundness percentage 56.1\% (for coefficients) returned by the artifact
+deviates from the percentage reported in Table~1 in the paper (i.e., 59.5\%).
+%
+We suspect that this deviation is due to a different version of the
+\texttt{pystan} library (i.e., the Python-Stan interface) used in the
+artifact.
+%
+Unfortunately, we cannot figure out which version of the \texttt{pystan} library
+was used when we conducted evaluation for the paper.
+%
+Nonetheless, the soundness percentages produced by the artifact only deviate
+slightly from those reported in Table~1 of the paper.
+%
+Hence, these deviations do not affect the key conclusion of the paper, namely
+the effectiveness of the resource-decomposition framework.

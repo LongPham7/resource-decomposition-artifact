@@ -16,6 +16,8 @@
 comment.cut
 *.toc
 
+README.pdf
+
 # OCaml-related files
 .merlin
 .ocamlformat
