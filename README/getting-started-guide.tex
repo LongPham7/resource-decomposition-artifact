@@ -1,0 +1,147 @@
+% !TeX root = README.tex
+
+\section{Getting Started Guide}
+
+Docker is required to run the artifact.
+%
+First, install Docker Engine on your machine as instructed in
+\url{https://docs.docker.com/engine/install/}.
+%
+To check if Docker has been installed properly, run
+\begin{verbatim}
+$ docker --version
+Docker version 28.1.1, build 4eba377
+\end{verbatim}
+
+Load the Docker image \texttt{resource-decomposition.tar.gz} by running
+\begin{verbatim}
+$ docker load --input resource-decomposition.tar.gz
+\end{verbatim}
+%
+It creates an image named \texttt{resource-decomposition} and stores it locally
+on your machine.
+%
+Docker may create an image with a slightly different name from
+\texttt{resource-decomposition}.
+%
+To check the name of the image, display all Docker images on your local machine
+by running
+\begin{verbatim}
+$ docker images
+\end{verbatim}
+
+To run the image \texttt{resource-decomposition}, run
+\begin{verbatim}
+$ docker run --name resource-decomposition -it --rm resource-decomposition
+root@25bfacdb517e:/home/ocaml-benchmarks#
+\end{verbatim}
+%
+It creates a Docker container (i.e., a runnable instance of the Docker image),
+which has the same name \texttt{resource-decomposition} as the Docker image.
+%
+The command also starts a shell inside the container.
+%
+If the command does not run properly, you can instead build the image locally on
+your machine as instructed in \cref{sec:reusability-guide}.
+
+Throughout this document, any command line starting with \texttt{\#} is executed
+inside the Docker container, and any command line starting with \texttt{\$} is
+executed in your local machine's terminal.
+
+\subsection{Demonstration of Resource Decomposition's First Instantiation}
+
+This section demonstrates the first instantiation of the resource-decomposition
+technique (\labelcref{introduction:instantiation:1}), which integrates static
+resource analysis and Bayesian data-driven resource analysis.
+%
+The static part runs a program-analysis tool RaML~\citep{RaML}.
+%
+It implements type-based static resource analysis Automatic Amortized Resource
+Analysis (AARA)~\citep{Hoffmann2011a,Hoffmann2017} and automatically infers
+polynomial cost bounds of input OCaml programs.
+%
+On the other hand, the data-driven part runs Bayesian inference to statistically
+infer a symbolic bound of a resource component using a dataset of the resource
+component's measurements.
+
+We consider the benchmark \mergesort{} implemented in OCaml.
+%
+The resource metric of interest is the number of function calls (including all
+recursive calls and helper functions).
+%
+Our goal is to infer an asymptotically tight $O (n \log n)$ (with concrete
+coefficients) cost bound of \mergesort{}.
+
+\paragraph{AARA}
+
+Inside the Docker container, the current working directory is
+\begin{verbatim}
+# pwd
+/home/ocaml-benchmarks
+\end{verbatim}
+%
+Let $P(x)$ denote an original program of \mergesort{}.
+%
+To view the source code of the original program $P(x)$, run
+\begin{verbatim}
+# cat lib/merge_sort/merge_sort.ml
+\end{verbatim}
+%
+This OCaml code is annotated with the construct \texttt{Raml.tick 1.0} to
+specify resource usage: it increments a cost counter by 1.0.
+%
+This construct is inserted at the start of each function in the source code.
+
+RaML can infer a polynomial bound for \mergesort{}.
+%
+To invoke RaML on \mergesort{}, run a python script:
+\begin{verbatim}
+# python3 raml/run_raml.py benchmark merge_sort standard
+\end{verbatim}
+%
+It prints out the inference result:
+\begin{verbatim}
+== merge_sort :
+
+  int list -> int list
+
+  Non-zero annotations of the argument:
+         7  <--  [::(*); ::(*)]
+         1  <--  [::(*)]
+         1  <--  []
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+     1 - 2.5*M + 3.5*M^2
+   where
+     M is the number of ::-nodes of the argument
+
+--
+  Mode:          upper
+  Metric:        ticks
+  Degree:        2
+  Run time:      0.13 seconds
+  #Constraints:  777
+
+====
+\end{verbatim}
+%
+In the middle of this displayed inference result, we can find a quadratic cost
+bound of \mergesort{} inferred by RaML:
+\begin{equation}
+  1 - 2.5 m + 3.5 m^2,
+\end{equation}
+where $m$ is the length of the input list.
+%
+This quadratic bound is sound (i.e., it is a valid worst-case cost bound for all
+input sizes).
+%
+But it is not an asymptotically tight $O(n \log n)$ bound of \mergesort{}.
+
+\paragraph{Resource decomposition}
+
+To obtain an asymptotically tighter cost bound of \mergesort{}, we integrate
+AARA and Bayesian data-driven analysis via resource decomposition.
+%
+A resource 

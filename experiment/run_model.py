@@ -322,16 +322,8 @@ if __name__ == "__main__":
 
     if mode == "all":
         run_multiple_benchmarks(list_benchmarks_data_driven, model_ids)
-    elif mode == "test":
-        # benchmarks = ["merge_sort", "quicksort", "bubble_sort",
-        #               "heap_sort", "huffman_code",
-        #               "balanced_binary_search_tree", "unbalanced_binary_search_tree",
-        #               "red_black_tree", "avl_tree", "splay_tree"]
-        # benchmarks = ["balanced_binary_search_tree", "unbalanced_binary_search_tree",
-        #               "red_black_tree", "avl_tree", "splay_tree"]
-        benchmarks = ["balanced_binary_search_tree"]
-        run_multiple_benchmarks(benchmarks, model_ids)
-        print("We are done with testing")
     elif mode == "benchmark":
         benchmarks = list_args[2:]
         run_multiple_benchmarks(benchmarks, model_ids)
+    else:
+        raise ValueError("Unsupported mode: {}".format(mode))

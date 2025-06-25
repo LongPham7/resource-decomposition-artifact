@@ -1,0 +1,140 @@
+% Useful packages for mathematical typesetting
+
+%%% Basic mathematics
+% For advanced typesetting for mathematics
+\usepackage{amsmath}
+% For the proof environment
+\usepackage{amsthm}
+
+%%% Math symbols
+% For the blackboard font: \mathbb
+\usepackage{amssymb}
+% For \llparenthesis, \rrparenthesis, \llbracket, \rrbracket, and
+% \curlyveedownarrow
+\usepackage{stmaryrd}
+% For \coloneq, \Coloneqq, and \xrightarrow
+\usepackage{mathtools}
+% For \leadsto
+\usepackage{latexsym}
+% For \ding{55} for the x mark
+\usepackage{pifont}
+
+%%% Additional math packages
+% For inference rules
+\usepackage{mathpartir}
+
+%%% Graphics
+% Support the \includegraphics command and options
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+%%% Floating bodies
+% For placing figures side by side
+\usepackage{caption}
+% For placing figures side by side by the subfigure environment.
+% Also, we can customize the references to subfigures (i.e., \subref{...}).
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{wrapfig} % For wrapping text around figures
+
+%%% Code listings
+% For advanced verbatim typesetting. It offers the verbatim environment.
+\usepackage{fancyvrb}
+\usepackage{listings}
+\lstdefinestyle{raml}{
+	tabsize=2,
+	numbers=none, %use numbers=left
+	numbers=none,
+	firstnumber=auto,
+	numberstyle=\tiny,
+	stepnumber=1,
+	numbersep=5pt,
+	basicstyle=\linespread{0.8}\tt\footnotesize,
+	escapechar=\%,
+	mathescape,
+	language=CaML,
+	columns=flexible,
+	xleftmargin=0pt,
+	xrightmargin=0pt,
+	morekeywords={tick,stat},
+	deletekeywords={},
+	frame=none,
+	literate={->}{$\rightarrow$}{3}
+}
+
+%%% New floating bodies.
+% Introduce the listing environment for code listings
+\usepackage{newfloat}
+\DeclareFloatingEnvironment[name=Listing]{listing}
+\captionsetup[listing]{name={Lst.}}
+
+%%% Tables
+\usepackage{booktabs}
+% For better wrapping of text in a table. It requires the array package.
+\usepackage{tabularx}
+% For multi-row table entries
+\usepackage{multirow}
+
+% For setting the table width. We use this when we want to squeeze an entire
+% table to the textwidth by placing the tabular environment inside
+% \begin{adjustbox}{max width=\textwidth} ... \end{adjustbox}.
+\usepackage{adjustbox}
+
+%%% Lists
+% For customization of lists (e.g., inlined lists, list item labels, and
+% vertical/horizontal spacing around lists)
+\usepackage[inline]{enumitem}
+
+%%% Color
+\usepackage{xcolor}
+
+%%% Hyperlinks and URLs
+% The following customization of hyperref requires the xcolor package.
+\usepackage[
+    colorlinks,
+    linkcolor=blue,
+    citecolor=brown,
+    backref=page,
+    urlcolor=blue,
+    pdfstartview=FitH
+]{hyperref}
+
+%%% References
+\usepackage{cleveref}
+\crefname{theorem}{Thm.}{Thms.}
+\crefname{algorithm}{Alg.}{Algs.}
+\crefname{lemma}{Lem.}{Lemmas}
+\crefname{proposition}{Prop.}{Props.}
+\crefname{corollary}{Cor.}{Cors.}
+\crefname{definition}{Defn.}{Defns.}
+\crefname{example}{Ex.}{Exs.}
+\crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Tab.}{Tabs.}
+\crefformat{section}{\S#2#1#3}
+\crefmultiformat{section}{\S#2#1#3}{ and~\S#2#1#3}{, \S#2#1#3}{ and~\S#2#1#3}
+\crefname{equation}{Eqn.}{Eqns.}
+\crefname{listing}{Listing}{Listings}
+\crefname{sublisting}{Listing}{Listings}
+
+%%% Bibliography
+\usepackage[square,numbers]{natbib}
+
+%%% Theorem and equation setting
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+%%% Fonts
+% The following lines are from the file acmart.cls. I first learned it from this
+% Stack Exchange post:
+% https://tex.stackexchange.com/questions/540011/font-used-in-acm-template.
+% It is critical to place these lines at the end of the preamble; otherwise, if
+% we place them before \usepackage{amsthm}, for instance, it raises an error.
+\RequirePackage[T1]{fontenc}
+\RequirePackage[tt=false, type1=true]{libertine}
+\RequirePackage[varqu]{zi4}
+\RequirePackage[libertine]{newtxmath}

@@ -1,0 +1,24 @@
+# Editor-related directories and files
+.vscode/
+
+# LaTex-related files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+comment.cut
+*.toc
+
+# OCaml-related files
+.merlin
+.ocamlformat
+
+# Docker-related files
+*.tar.gz

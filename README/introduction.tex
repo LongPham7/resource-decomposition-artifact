@@ -1,0 +1,125 @@
+% !TeX root=README.tex
+
+\section{Introduction}
+
+\paragraph{What is included}
+
+From Zenodo, you should obtain the following items:
+\begin{itemize}
+      \item This \texttt{README.pdf} document; and
+      \item Archived and compressed Docker image
+            \texttt{resource-decomposition.tar.gz}.
+\end{itemize}
+
+\paragraph{Artifact overview}
+
+\emph{Hybrid resource analysis} integrates two resource-analysis techniques with
+complementary strengths and weaknesses.
+%
+Given a program, the goal of resource analysis is to infer its worst-case
+symbolic bound on resource usage (e.g., running time and memory).
+%
+Three existing families of resource-analysis techniques, namely static,
+data-driven, and interactive analyses, complement each other.
+%
+For example, static resource analysis is sound but incomplete due to the
+undecidability of resource analysis in general.
+%
+By contrast, data-driven resource analysis, which statistically infers a cost
+bound from a dataset of cost measurements, is complete but unsound.
+%
+Additionally, compared to static and data-driven analyses, interactive resource
+analysis, where human intervention is required, is not fully automated but has
+higher expressiveness and more reasoning power.
+%
+By integrating two analysis techniques, hybrid resource analysis retains their
+strengths while mitigating their respective weaknesses.
+
+\emph{Resource decomposition} is a new approach to hybrid resource analysis
+proposed in our paper.
+%
+It works as follows.
+%
+First, given an input program $P(x)$, the user annotates the source code to
+specify a quantity called \emph{resource component} (e.g., the recursion depth
+of a helper function inside the program $P(x)$).
+%
+The resulting annotated program $P_{\mathrm{rd}}(x)$ is called a
+\emph{resource-decomposed program}.
+%
+The first resource analysis is performed on the resource-decomposed program
+$P_{\mathrm{rd}}(x)$, inferring a symbolic bound $g(x)$ of the resource
+component.
+%
+Next, the resource-decomposed program $P_{\mathrm{rd}}(x)$ is extended with a
+numeric variable $r$, called a resource guard, which tracks the user-specified
+resource component.
+%
+The resulting program $P_{\mathrm{rd}}(x, r)$ is called a \emph{resource-guarded
+      program}.
+%
+The second resource analysis is performed on the resource-guarded program to
+infer its overall cost bound $f(x, r)$.
+%
+Finally, an overall cost bound of the original program $P(x)$ is obtained by
+substituting the resource-component bound $r \leq g(x)$ for the resource guard
+$r$ in the bound $f(x, r)$, yielding $f(x, g(x))$.
+
+Our artifact contains code for evaluating three concrete instantiations of the
+resource-decomposition technique (\S4--6 in the paper).
+%
+These instantiations each combine the following pairs of resource-analysis
+techniques:
+\begin{enumerate}[label={Inst \arabic*}]
+      \item Static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
+            Bayesian data-driven analysis (\S4);
+            \label{introduction:instantiation:1}
+      \item Static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
+            proof-assistant-based interactive resource analysis (Iris with time
+            credits~\citep{Chargueraud2019}) (\S5); and
+            \label{introduction:instantiation:2}
+      \item SMT-based semi-automatic analysis (TiML~\citep{WangWC17}) and
+            Bayesian data-driven analysis (\S6).
+            \label{introduction:instantiation:3}
+\end{enumerate}
+%
+\labelcref{introduction:instantiation:1} is evaluated on 13 benchmarks listed in
+Table~1 of the paper.
+%
+\labelcref{introduction:instantiation:2} is evaluated on Kruskal's algorithm for
+minimum spanning trees.
+%
+\labelcref{introduction:instantiation:3} is evaluated on a version of quicksort
+where integer comparison has logarithmic cost in the maximum size of integers
+(i.e., linear cost in the number of bits).
+
+Out of the six analyses (i.e., two resource analyses employed in each
+instantiation), the artifact performs five of them: all except the interactive
+resource analysis in the second instantiation (\S5).
+%
+The inference result of the interactive analysis is available in
+\citet{Chargueraud2019} and hence is not included in our artifact.
+
+\paragraph{Supported claims}
+
+The artifact supports the following claims in the paper:
+\begin{itemize}
+      \item \labelcref{introduction:instantiation:1}: Percentages of sound
+            bounds and analysis time, which are listed in the last four columns
+            of Table~1.
+      \item \labelcref{introduction:instantiation:1}: Plots of posterior
+            distributions of the 13 benchmarks in the first instantiation
+            (Figure~3,4, 7--20).
+      \item \labelcref{introduction:instantiation:2}: Cost bound inferred by
+            static analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} for the
+            resource-guarded program of Kruskal's algorithm.
+            %
+            The bound is displayed in Eq.~(5.3) in the paper.
+      \item \labelcref{introduction:instantiation:2}: Plots of inferred symbolic
+            bounds (Figure~5).
+      \item \labelcref{introduction:instantiation:3}: Cost bound inferred by
+            TiML~\citep{WangWC17} for quicksort, which is displayed in Eq.~(6.1)
+            in the paper.
+      \item \labelcref{introduction:instantiation:3}: Plots of inferred symbolic
+            bounds (Figure~6).
+\end{itemize}

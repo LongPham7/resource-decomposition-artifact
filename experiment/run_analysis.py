@@ -390,4 +390,4 @@ if __name__ == "__main__":
         benchmark = list_args[2]
         print_relative_errors_latex_benchmark(benchmark)
     else:
-        print("The given argument is invalid")
+        raise ValueError("Unsupported mode: {}".format(mode))

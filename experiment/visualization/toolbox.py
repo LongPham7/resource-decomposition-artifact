@@ -81,10 +81,11 @@ def verify_sci_exponent(benchmark, fig):
 
 latex_fig_rc = {
     "font.family": "serif",
-    "text.usetex": True,
-    'text.latex.preamble': r"""
-        \usepackage[tt=false]{libertine}
-        \usepackage[T1]{fontenc}
-        \usepackage[varqu]{zi4}
-        \usepackage[libertine]{newtxmath}"""
+    "text.usetex": False
+    # "text.usetex": True,
+    # 'text.latex.preamble': r"""
+    #     \usepackage[tt=false]{libertine}
+    #     \usepackage[T1]{fontenc}
+    #     \usepackage[varqu]{zi4}
+    #     \usepackage[libertine]{newtxmath}"""
 }

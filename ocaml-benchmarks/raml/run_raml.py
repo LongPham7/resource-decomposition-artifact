@@ -81,8 +81,18 @@ def run_raml(benchmark, version):
 
     # Run RaML and save the output to a file
     with open(output_filepath, "w") as f:
-        subprocess.run([raml_filepath, "analyze", "ticks", str(degree), "-m", benchmark_filepath,
-                        function_name], stdout=f)
+        # For the benchmarks red_black_tree and splay_tree, we need to manually
+        # specify a list of LP variables to filter out.
+        if benchmark in ["red_black_tree", "splay_tree"]:
+            lp_vars_json_filename = os.path.expanduser(os.path.join(
+                "/home", "ocaml-benchmarks", "raml",
+                "lp_vars_{}.json".format(benchmark)))
+            subprocess.run([raml_filepath, "analyze", "ticks", str(degree),
+                            "--lp-vars", lp_vars_json_filename,
+                            "-m", benchmark_filepath, function_name], stdout=f)
+        else:
+            subprocess.run([raml_filepath, "analyze", "ticks", str(degree), "-m", benchmark_filepath,
+                            function_name], stdout=f)
 
     # Print out RaML's output, which has just been saved to a file
     subprocess.run(["cat", output_filepath])

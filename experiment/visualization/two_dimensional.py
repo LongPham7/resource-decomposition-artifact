@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import arviz as az
 import numpy as np
 import math
 
@@ -359,13 +358,4 @@ def plot_cost_gaps_histogram_categorized_by_bucket(list_runtime_data, list_list_
         axs[i//ncols, i % ncols].remove()
 
     axs[0, 0].legend()
-    save_and_show_image(image_dict)
-
-
-# Plot a trace from Stan
-
-
-def plot_trace_stan(fit, var_names, image_dict):
-    with az.style.context("arviz-darkgrid", after_reset=True):
-        az.plot_trace(fit, var_names=var_names, rug=False, compact=False)
     save_and_show_image(image_dict)

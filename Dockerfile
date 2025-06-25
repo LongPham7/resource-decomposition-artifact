@@ -20,7 +20,7 @@ RUN apt install -y wget
 # this issue, I resort to this GitHub repository:
 # https://github.com/ocaml/opam-repository-archive.
 RUN opam repo add archive git+https://github.com/ocaml/opam-repository-archive
-RUN opam install -y ocamlbuild.0.14.0 core.v0.11.3
+RUN opam install -y ocamlbuild.0.14.0 core.v0.11.3 yojson
 
 # Install the library liblapacke-dev, which is necessary for the build of RaML.
 # This library is probably used by the LP solver CLP used inside RaML.
@@ -32,7 +32,7 @@ RUN wget https://github.com/coin-or/Clp/releases/download/releases%2F1.17.9/Clp-
 RUN tar xvzf Clp-releases.1.17.9-x86_64-ubuntu22-gcc1140.tar.gz
 
 # Install the Python-Stan binding and other Python libraries
-RUN pip install pystan numpy matplotlib joblib networkx
+RUN pip install pystan==3.5.0 numpy matplotlib joblib networkx scipy scikit-learn seaborn 
 
 # Install OCaml 4.14.0. This version of OCaml is used for running OCaml
 # benchmark code.

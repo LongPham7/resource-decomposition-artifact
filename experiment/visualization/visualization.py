@@ -6,7 +6,7 @@ import sys
 
 import probabilistic_models
 from json_manipulation import read_inference_result_from_json, read_runtime_cost_data_from_json, \
-    read_stan_fit_object, read_total_cost_data_from_json
+    read_total_cost_data_from_json
 from directory_location import get_image_directory
 from benchmark_data.benchmark_parameters \
     import list_benchmarks_data_driven, list_benchmarks_one_input_size, \
@@ -431,7 +431,7 @@ def plot_posterior_distributions(benchmark, bucket_size, legend_location="top"):
         # facecolor="lightskyblue" inside plt.figure.
         fig = plt.figure(figsize=(ax_height * ncols + legend_width, ax_height),
                          layout="compressed")
-                         # layout="constrained")
+        # layout="constrained")
 
         # Plot the posterior distributions of all counters' inferred bounds
         for counter_index in range(num_counters):
@@ -662,25 +662,6 @@ def plot_interactive_resource_analysis(benchmark, bucket_size, legend_location="
         vis_toolbox.verify_sci_exponent(benchmark, fig)
 
 
-# Plot a trace from Stan
-
-
-def plot_trace_stan_model_id(benchmark, bucket_size, counter_index, model_id):
-    fit = read_stan_fit_object(benchmark, bucket_size, counter_index, model_id)
-    if model_id in [0, 1, 2]:
-        var_names = ["coefficients_linear", "coefficients_logarithmic",
-                     "mixing_probability_logarithmic_model"]
-    else:
-        raise ValueError("The given model ID is invalid")
-
-    image_directory = get_image_directory(
-        benchmark, bucket_size, counter_index)
-    image_filename = "trace_plot"
-    image_path = os.path.join(image_directory, image_filename)
-    image_dict = {"image_path": image_path, "show": True}
-    vis_two_dim.plot_trace_stan(fit, var_names, image_dict)
-
-
 # Plot a legend only
 
 
@@ -767,4 +748,4 @@ if __name__ == "__main__":
     elif mode == "kruskal_soundness_check":
         kruskal_soundness_check()
     else:
-        raise ValueError("The given mode is invalid")
+        raise ValueError("Unsupported mode: {}".format(mode))
