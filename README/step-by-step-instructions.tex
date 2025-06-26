@@ -4,6 +4,13 @@
 \label{sec:step-by-step-instructions}
 
 \subsection{Instantiation 1}
+\label{sec:step-by-step-instructions:instantiation-1}
+
+This section describes how to reproduce evaluation results of
+\labelcref{introduction:instantiation:1} of the resource-decomposition
+framework, where type-based static resource analysis
+AARA~\citep{Hoffmann2011a,Hoffmann2017} and Bayesian data-driven resource
+analysis are combined.
 
 \paragraph{Benchmark programs}
 
@@ -199,7 +206,7 @@ directory \texttt{/home/experiment/}, run
 where $\texttt{<mode>} \in \set{\texttt{all}, \texttt{top}, \texttt{right},
     \texttt{no\_legend}}$ specifies where the legend is placed inside a plot.
 
-The generated plots in PDF are stored in the directory
+The generated PDF files are stored in the directory
 \begin{verbatim}
 /home/experiment/images/<benchmark-name>/bucket1
 \end{verbatim}
@@ -213,9 +220,96 @@ posterior_distributions.pdf, posterior_distributions_no_legend.pdf
 To transfer plots from the Docker container to your local machine, run the
 following command in your local machine's terminal:
 \begin{verbatim}
-$ docker cp resource-decomposition:<plot-in-container> <destination-in-local-machine>
+$ docker cp resource-decomposition:<source-path> <destination-path>
 \end{verbatim}
 
 \subsection{Instantiation 2}
+\label{sec:step-by-step-instructions:instantiation-2}
+
+\labelcref{introduction:instantiation:2} of the resource-decomposition framework
+integrates static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
+interactive analysis (Iris with time credits~\citep{Chargueraud2019}).
+%
+This instantiation is evaluated on Kruskal's algorithm for minimum spanning
+trees.
+%
+This benchmark (named \kruskal{}) is implemented in OCaml and uses a union-find
+(also called disjoint-set) data structure.
+%
+Given an input weighted graph, \kruskal{} first runs \mergesort{} to sort the
+edges in the ascending order of their weights.
+%
+Initially, each vertex in the graph forms its own (disjoint) set.
+%
+\kruskal{} then examines each edge in their sorted order, incrementally building
+a spanning tree by merging two disjoint sets whenever they are connected by an
+edge.
+
+\paragraph{Static analysis}
+
+AARA is used to infer an overall cost bound of \kruskal{}'s resource-guarded
+program.
+%
+To run AARA, go to the directory \text{/home/ocaml-benchmarks/} and run
+\begin{verbatim}
+# python3 raml/run_raml.py benchmark kruskal_algorithm counter
+\end{verbatim}
+%
+It returns an inference result:
+\begin{Verbatim}[fontsize=\footnotesize]
+  == kruskal_algorithm :
+
+  [(int * (int * float) list) list;
+  ('a * 'b list) * ('c * int list)] ->
+  (int * int * float) list
+
+  Non-zero annotations of the argument:
+  3.5  <--  ([::(*, [::(*, *)])], ((*, []), (*, [::(*)])))
+  1  <--  ([::(*, [::(*, *)])], ((*, []), (*, [])))
+  3.5  <--  ([::(*, [])], ((*, []), (*, [])))
+  1.5  <--  ([], ((*, [::(*)]), (*, [])))
+  7  <--  ([], ((*, []), (*, [])))
+
+  Non-zero annotations of result:
+
+  Simplified bound:
+  7 + 1*L*M + 3.5*L*M*R + 3.5*M + 1.5*Y
+  where
+  R is the number of ::-nodes of the 2nd component of the 2nd component of the 2nd ...
+  Y is the number of ::-nodes of the 2nd component of the 1st component of the 2nd ...
+  M is the number of ::-nodes of the 1st component of the argument
+  L is the maximal number of ::-nodes of the 2nd component in the ::-nodes of the 1st ...
+
+  --
+  Mode:          upper
+  Metric:        ticks
+  Degree:        3
+  Run time:      16.02 seconds
+  #Constraints:  57606
+
+  ====
+\end{Verbatim}
+%
+The inferred bound is translated to
+\begin{equation}
+  f (d, \abs{V}, r_1, r_2) = 7 + 3.5 \abs{V} + d \cdot \abs{V} + 3.5 d \cdot \abs{V} \cdot r_1 + 1.5 r_2,
+\end{equation}
+which is reported in Eq. (5.3) in the paper.
+%
+The analysis time of RaML should be less than \qty{20}{\second}.
+
+\paragraph{Plot of inferred bounds}
+
+The plot of the inferred bound in \kruskal{} (i.e., Figure~5 in the paper) can be produced
+by moving to the directory \texttt{/home/experiment} and running
+\begin{verbatim}
+# python3 -m visualization.visualization interactive_analysis
+\end{verbatim}
+%
+The generated plot is stored in the PDF file
+\begin{verbatim}
+/home/experiment/images/kruskal_algorithm/bucket1/interactive_analysis_result.pdf
+\end{verbatim}
 
 \subsection{Instantiation 3}
+\label{sec:step-by-step-instructions:instantiation-3}

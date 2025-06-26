@@ -6,9 +6,9 @@
 
 From Zenodo, you should obtain the following items:
 \begin{itemize}
-      \item This \texttt{README.pdf} document; and
-      \item Archived and compressed Docker image
-            \texttt{resource-decomposition.tar.gz}.
+  \item This \texttt{README.pdf} document; and
+  \item Archived and compressed Docker image
+        \texttt{resource-decomposition.tar.gz}.
 \end{itemize}
 
 \paragraph{Artifact overview}
@@ -56,7 +56,7 @@ numeric variable $r$, called a resource guard, which tracks the user-specified
 resource component.
 %
 The resulting program $P_{\mathrm{rd}}(x, r)$ is called a \emph{resource-guarded
-      program}.
+  program}.
 %
 The second resource analysis is performed on the resource-guarded program to
 infer its overall cost bound $f(x, r)$.
@@ -71,16 +71,16 @@ resource-decomposition technique (\S4--6 in the paper).
 These instantiations each combine the following pairs of resource-analysis
 techniques:
 \begin{enumerate}[label={Inst. \arabic*}]
-      \item Static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
-            Bayesian data-driven analysis (\S4);
-            \label{introduction:instantiation:1}
-      \item Static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
-            proof-assistant-based interactive resource analysis (Iris with time
-            credits~\citep{Chargueraud2019}) (\S5); and
-            \label{introduction:instantiation:2}
-      \item SMT-based semi-automatic analysis (TiML~\citep{WangWC17}) and
-            Bayesian data-driven analysis (\S6).
-            \label{introduction:instantiation:3}
+  \item Static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and Bayesian
+        data-driven analysis (\S4);
+        \label{introduction:instantiation:1}
+  \item Static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
+        proof-assistant-based interactive resource analysis (Iris with time
+        credits~\citep{Chargueraud2019}) (\S5); and
+        \label{introduction:instantiation:2}
+  \item SMT-based semi-automatic analysis (TiML~\citep{WangWC17}) and Bayesian
+        data-driven analysis (\S6).
+        \label{introduction:instantiation:3}
 \end{enumerate}
 %
 \labelcref{introduction:instantiation:1} is evaluated on 13 benchmarks listed in
@@ -104,22 +104,21 @@ The inference result of the interactive analysis is available in
 
 The artifact supports the following claims in the paper:
 \begin{itemize}
-      \item \labelcref{introduction:instantiation:1}: Percentages of sound
-            bounds and analysis time, which are listed in the last four columns
-            of Table~1.
-      \item \labelcref{introduction:instantiation:1}: Plots of posterior
-            distributions of the 13 benchmarks in the first instantiation
-            (Figures~3,4, 7--20).
-      \item \labelcref{introduction:instantiation:2}: Cost bound inferred by
-            static analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} for the
-            resource-guarded program of Kruskal's algorithm.
-            %
-            The bound is displayed in Eq.~(5.3) in the paper.
-      \item \labelcref{introduction:instantiation:2}: Plots of inferred symbolic
-            bounds (Figure~5).
-      \item \labelcref{introduction:instantiation:3}: Cost bound inferred by
-            TiML~\citep{WangWC17} for quicksort, which is displayed in Eq.~(6.1)
-            in the paper.
-      \item \labelcref{introduction:instantiation:3}: Plots of inferred symbolic
-            bounds (Figure~6).
+  \item \labelcref{introduction:instantiation:1}: Percentages of sound bounds
+        and analysis time, which are listed in the last four columns of Table~1.
+  \item \labelcref{introduction:instantiation:1}: Plots of posterior
+        distributions of the 13 benchmarks in the first instantiation
+        (Figures~3,4, 7--20).
+  \item \labelcref{introduction:instantiation:2}: Cost bound inferred by static
+        analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} for the
+        resource-guarded program of Kruskal's algorithm.
+        %
+        The bound is displayed in Eq.~(5.3) in the paper.
+  \item \labelcref{introduction:instantiation:2}: Plots of inferred symbolic
+        bounds (Figure~5).
+  \item \labelcref{introduction:instantiation:3}: Cost bound inferred by
+        TiML~\citep{WangWC17} for quicksort, which is displayed in Eq.~(6.1) in
+        the paper.
+  \item \labelcref{introduction:instantiation:3}: Plots of inferred symbolic
+        bounds (Figure~6).
 \end{itemize}
