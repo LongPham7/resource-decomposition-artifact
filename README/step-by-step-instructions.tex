@@ -1,0 +1,221 @@
+% !TeX root = README.tex
+
+\section{Step by Step Instructions}
+\label{sec:step-by-step-instructions}
+
+\subsection{Instantiation 1}
+
+\paragraph{Benchmark programs}
+
+In the artifact, the 13 benchmarks for \labelcref{introduction:instantiation:1}
+go by the following names:
+\begin{verbatim}
+merge_sort, quicksort, bubble_sort, heap_sort, huffman_code,
+unbalanced_binary_search_tree, balanced_binary_search_tree,
+red_black_tree, avl_tree, splay_tree,
+prim_algorithm, dijkstra_algorithm, bellman_ford_algorithm, kruskal_algorithm
+\end{verbatim}
+%
+For each benchmark, the original OCaml program $P(x)$ is available in the file
+\begin{verbatim}
+/home/ocaml-benchmarks/lib/<benchmark-name>/<benchmark-name>.ml
+\end{verbatim}
+where \texttt{<benchmark-name>} is replaced the benchmark program's name (e.g.,
+\texttt{merge\_sort}).
+%
+For the two benchmarks \unbalancedbst{} and \balancedbst{}, however, they share
+the same OCaml source file:
+\begin{verbatim}
+/home/ocaml-benchmarks/lib/binary_search_tree/binary_search_tree.ml
+\end{verbatim}
+
+\paragraph{Static analysis}
+
+To perform AARA~\citep{Hoffmann2011a,Hoffmann2017} (implemented in the tool
+RaML~\citep{RaML}), go to the directory
+\begin{verbatim}
+# cd /home/ocaml-benchmarks/
+\end{verbatim}
+
+If you wish to run RaML on an original OCaml program $P(x)$, run
+\begin{verbatim}
+# python3 raml/run_raml.py benchmark <benchmark-name> standard
+\end{verbatim}
+%
+The inference result (and analysis time) is printed out on the screen and also
+saved in the file
+\begin{verbatim}
+/home/ocaml-benchmarks/raml/output/<benchmark-name>/raml_output_standard.txt
+\end{verbatim}
+%
+The results of running RaML on the original programs are shown in the fourth
+column (titled ``AARA Baselines Basic'') of Table~1 in the paper.
+
+The analysis time of RaML varies greatly from benchmark to benchmark.
+%
+For instance, \mergesort{}'s original program only takes less than
+\qty{1.0}{\second}, while \redblacktree{}'s original program can take around
+\qty{480}{\second}.
+
+The resource-guarded program $P_{\mathrm{rg}}(x, r)$ of each benchmark is
+available in the file
+\begin{verbatim}
+/home/ocaml-benchmarks/lib/<benchmark-name>/<benchmark-name>_counter.ml
+\end{verbatim}
+%
+The resource-guarded program $P_{\mathrm{rg}}(x, r)$ is obtained from the
+original program $P(x)$ by \emph{manually} extending the source code with
+resource guards.
+%
+Our artifact does not \emph{automatically} perform this program transformation,
+although it is possible to automate (as formulated in \S3.3 of the paper).
+
+To run RaML on a resource-guarded program, run
+\begin{verbatim}
+# python3 raml/run_raml.py benchmark <benchmark-name> counter
+\end{verbatim}
+%
+The inference result (and analysis time) is printed out on the screen and also
+saved in the file
+\begin{verbatim}
+/home/ocaml-benchmarks/raml/output/<benchmark-name>/raml_output_counter.txt
+\end{verbatim}
+%
+The analysis of RaML varies greatly from benchmark to benchmark: \mergesort{}'s
+resource-guarded program takes less than \qty{1.0}{\second}, while \dijkstra{}'s
+resource-guarded program can take around \qty{3180}{\second}.
+%
+RaML's analysis time for resource-guarded programs is reported in the last
+column (titled ``Analysis Time Static'') of Table~1 in the paper.
+
+To run RaML on both the original and resource-guarded programs of a benchmark,
+run
+\begin{verbatim}
+# python3 raml/run_raml.py benchmark <benchmark-name> both
+\end{verbatim}
+
+Finally, to run RaML on (original and/or resource-guarded) programs of all
+relevant benchmarks (i.e., the 13 benchmarks in
+\labelcref{introduction:instantiation:1} and the benchmark \kruskal{} in
+\labelcref{introduction:instantiation:2}), run
+\begin{verbatim}
+# python3 raml/run_raml.py all <mode>
+\end{verbatim}
+where $\texttt{<mode>} \in \set{\texttt{standard}, \texttt{counter},
+    \texttt{both}}$ specifies which version of a program is fed to RaML for
+every benchmark.
+
+\paragraph{Dataset generation}
+
+The resource-decomposed program $P_{\mathrm{rd}}(x)$ of each benchmark is
+available in the file
+\begin{verbatim}
+/home/ocaml-benchmarks/lib/<benchmark-name>/<benchmark-name>_data_collection.ml
+\end{verbatim}
+
+Before performing Bayesian inference, we generate a dataset $\calD$ of resource
+components' measurements.
+%
+To do so, first move to the directory
+\begin{verbatim}
+# cd /home/experiment/
+\end{verbatim}
+%
+Then run
+\begin{verbatim}
+# python3 -m runtime_data_generation.runtime_data_generation benchmark <benchmark-name>
+\end{verbatim}
+%
+The generated dataset $\calD$ (and also analysis time of Bayesian inference) is
+stored in a JSON file
+\begin{verbatim}
+/home/experiment/bin/<benchmark-name>/bucket1/runtime_cost_data/runtime_cost_data.json
+\end{verbatim}
+
+If you wish to generate datasets for all relevant benchmarks (i.e., the 13
+benchmarks in \labelcref{introduction:instantiation:1} and the benchmark
+\quicksorttiml{} in \labelcref{introduction:instantiation:3}), run
+\begin{verbatim}
+# python3 -m runtime_data_generation.runtime_data_generation all
+\end{verbatim}
+
+\paragraph{Bayesian inference}
+
+We perform Bayesian inference on the observed data $\calD$ to infer a posterior
+distribution of recursion-depth symbolic bounds.
+%
+This is achieved by running
+\begin{verbatim}
+# python3 -m run_model benchmark <benchmark-name>
+\end{verbatim}
+%
+This command invokes an inference engine of the Stan probabilistic programming
+language~\citep{Carpenter2017}, drawing 44,000 posterior samples of inferred
+recursion-depth bounds.
+
+The analysis time of Bayesian inference should be less than \qty{3}{\minute} in
+all benchmarks (and less than \qty{1}{\minute} in most benchmarks), assuming
+that it is not the first time the command is executed.
+%
+Otherwise, the command can take longer when it is first executed in order to
+build efficient machine code for a sampling algorithm.
+
+To perform Bayesian inference on all relevant benchmarks (i.e., the 13
+benchmarks in \labelcref{introduction:instantiation:1} and the benchmark
+\quicksorttiml{} in \labelcref{introduction:instantiation:3}), run
+\begin{verbatim}
+# python3 -m run_model all
+\end{verbatim}
+
+\paragraph{Table of experiment results}
+
+To display the analysis of Bayesian data-driven analysis of all relevant
+benchmarks (i.e., the 13 benchmarks in \labelcref{introduction:instantiation:1}
+and the benchmark \quicksorttiml{} in \labelcref{introduction:instantiation:3}),
+run the following command in the directory \texttt{/home/experiment/}:
+\begin{verbatim}
+# python3 -m run_analysis time
+\end{verbatim}
+%
+This analysis time is reported in the second-to-last column (titled ``Analysis
+Time Data-Driven'') of Table~1 in the paper.
+
+To display the percentages of sound resource-component bounds in all relevant
+benchmarks, run
+\begin{verbatim}
+# python3 -m run_analysis soundness all
+\end{verbatim}
+%
+This table corresponds to the third-to-last and fourth-to-last columns (titled
+``Sound Bounds Asymptotics and Coefficients'') in Table~1.
+
+\paragraph{Plots of inferred bounds}
+
+To produce plots of inferred bounds (e.g., Figures~3 and 4 in the paper), in the
+directory \texttt{/home/experiment/}, run
+\begin{verbatim}
+# python3 -m visualization.visualization plot <mode>
+\end{verbatim}
+where $\texttt{<mode>} \in \set{\texttt{all}, \texttt{top}, \texttt{right},
+    \texttt{no\_legend}}$ specifies where the legend is placed inside a plot.
+
+The generated plots in PDF are stored in the directory
+\begin{verbatim}
+/home/experiment/images/<benchmark-name>/bucket1
+\end{verbatim}
+%
+For instance, in the directory \texttt{/home/experiment/images/merge\_sort/bucket1}
+for the benchmark \mergesort{}, we have two plots:
+\begin{verbatim}
+posterior_distributions.pdf, posterior_distributions_no_legend.pdf
+\end{verbatim}
+
+To transfer plots from the Docker container to your local machine, run the
+following command in your local machine's terminal:
+\begin{verbatim}
+$ docker cp resource-decomposition:<plot-in-container> <destination-in-local-machine>
+\end{verbatim}
+
+\subsection{Instantiation 2}
+
+\subsection{Instantiation 3}

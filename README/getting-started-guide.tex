@@ -1,6 +1,7 @@
 % !TeX root = README.tex
 
 \section{Getting Started Guide}
+\label{sec:getting-started-guide}
 
 Docker is required to run the artifact.
 %
@@ -176,6 +177,9 @@ To view the code of the resource-guarded program $P_{\mathrm{rg}}(x, r)$, run
 \begin{verbatim}
 # cat lib/merge_sort/merge_sort_counter.ml
 \end{verbatim}
+%
+The resource-guarded program $P_{\mathrm{rg}}(x, r)$ is obtained from the
+original program $P(x)$ by manually extending it with a resource guard.
 
 \paragraph{Static analysis on the resource-guarded program}
 
@@ -248,7 +252,7 @@ to create a dataset $\calD$ of input sizes and recursion depths.
 %
 To this end, run
 \begin{verbatim}
-# python3 -m runtime_data_generation.runtime_data_generation benchmark quicksort
+# python3 -m runtime_data_generation.runtime_data_generation benchmark merge_sort
 \end{verbatim}
 %
 This command randomly generates many integer lists (of varying lengths), where
@@ -268,12 +272,12 @@ We next perform Bayesian inference by running
 # python3 -m run_model benchmark merge_sort
 \end{verbatim}
 %
-This command invokes a probabilistic programming language
-Stan~\citep{Carpenter2017}.
+This command invokes the inference engine of the probabilistic programming
+language Stan~\citep{Carpenter2017}.
 %
-The inference engine of Stan performs a sampling-based probabilistic inference
-algorithm, drawing a large number (specifically 44,000) of posterior
-recursion-depth bounds of \mergesort{}.
+It runs a sampling-based probabilistic inference algorithm, drawing a large
+number (specifically 44,000) of posterior recursion-depth bounds of
+\mergesort{}.
 
 The command takes approximately \qty{45}{\second} to run for the first time.
 %

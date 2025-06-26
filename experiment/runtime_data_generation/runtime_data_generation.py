@@ -163,11 +163,11 @@ if __name__ == "__main__":
     list_args = sys.argv
     first_arg = list_args[1]
     if first_arg == "all":
-        # benchmarks = list_benchmarks
-        benchmarks = ["merge_sort", "quicksort", "bubble_sort",
-                      "heap_sort", "huffman_code",
-                      "balanced_binary_search_tree", "unbalanced_binary_search_tree",
-                      "red_black_tree", "avl_tree", "splay_tree"]
+        benchmarks = list_benchmarks
+        # benchmarks = ["merge_sort", "quicksort", "bubble_sort",
+        #               "heap_sort", "huffman_code",
+        #               "balanced_binary_search_tree", "unbalanced_binary_search_tree",
+        #               "red_black_tree", "avl_tree", "splay_tree"]
         for benchmark in benchmarks:
             collect_runtime_cost_data_fixed_benchmark_all_bucket_sizes(
                 benchmark)
