@@ -40,7 +40,7 @@ degree_dict = {
     "prim_algorithm": 3,
     "dijkstra_algorithm": 3,
     "bellman_ford_algorithm": 3,
-    "kruskal_algorithm": 2
+    "kruskal_algorithm": 3
 }
 
 
