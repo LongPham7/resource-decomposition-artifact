@@ -107,7 +107,7 @@ To invoke RaML on \mergesort{}, run a python script:
 %
 It prints out the inference result:
 \begin{Verbatim}[fontsize=\footnotesize]
-  == merge_sort :
+== merge_sort :
 
   int list -> int list
 
@@ -123,14 +123,14 @@ It prints out the inference result:
   where
   M is the number of ::-nodes of the argument
 
-  --
+--
   Mode:          upper
   Metric:        ticks
   Degree:        2
   Run time:      0.13 seconds
   #Constraints:  777
 
-  ====
+====
 \end{Verbatim}
 %
 In the middle of the displayed inference result, we can find a quadratic cost
@@ -191,7 +191,7 @@ $P_{\mathrm{rg}}(x, r)$, we run RaML:
 %
 It prints out the inference result:
 \begin{Verbatim}[fontsize=\footnotesize]
-  == merge_sort :
+== merge_sort :
 
   [int list; int list * 'a] -> int list * (int list * 'a)
 
@@ -207,14 +207,14 @@ It prints out the inference result:
   L is the number of ::-nodes of the 1st component of the 2nd component of the argument
   M is the number of ::-nodes of the 1st component of the argument
 
-  --
+--
   Mode:          upper
   Metric:        ticks
   Degree:        2
   Run time:      0.28 seconds
   #Constraints:  1192
 
-  ====
+====
 \end{Verbatim}
 %
 Here, an inferred cost bound is

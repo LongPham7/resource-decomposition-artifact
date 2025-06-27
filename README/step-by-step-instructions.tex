@@ -226,20 +226,20 @@ $ docker cp resource-decomposition:<source-path> <destination-path>
 \subsection{Instantiation 2}
 \label{sec:step-by-step-instructions:instantiation-2}
 
-\labelcref{introduction:instantiation:2} of the resource-decomposition framework
-integrates static analysis (AARA~\citep{Hoffmann2011a,Hoffmann2017}) and
-interactive analysis (Iris with time credits~\citep{Chargueraud2019}).
+\labelcref{introduction:instantiation:2} integrates static analysis
+(AARA~\citep{Hoffmann2011a,Hoffmann2017}) and interactive analysis (Iris with
+time credits~\citep{Chargueraud2019}).
 %
 This instantiation is evaluated on Kruskal's algorithm for minimum spanning
 trees.
 %
-This benchmark (named \kruskal{}) is implemented in OCaml and uses a union-find
-(also called disjoint-set) data structure.
+The benchmark \kruskal{} is implemented in OCaml and uses a union-find data
+structure.
 %
 Given an input weighted graph, \kruskal{} first runs \mergesort{} to sort the
 edges in the ascending order of their weights.
 %
-Initially, each vertex in the graph forms its own (disjoint) set.
+Initially, each vertex in the graph forms its own (singleton) spanning tree.
 %
 \kruskal{} then examines each edge in their sorted order, incrementally building
 a spanning tree by merging two disjoint sets whenever they are connected by an
@@ -257,7 +257,7 @@ To run AARA, go to the directory \text{/home/ocaml-benchmarks/} and run
 %
 It returns an inference result:
 \begin{Verbatim}[fontsize=\footnotesize]
-  == kruskal_algorithm :
+== kruskal_algorithm :
 
   [(int * (int * float) list) list;
   ('a * 'b list) * ('c * int list)] ->
@@ -280,28 +280,28 @@ It returns an inference result:
   M is the number of ::-nodes of the 1st component of the argument
   L is the maximal number of ::-nodes of the 2nd component in the ::-nodes of the 1st ...
 
-  --
+--
   Mode:          upper
   Metric:        ticks
   Degree:        3
   Run time:      16.02 seconds
   #Constraints:  57606
 
-  ====
+====
 \end{Verbatim}
 %
 The inferred bound is translated to
 \begin{equation}
   f (d, \abs{V}, r_1, r_2) = 7 + 3.5 \abs{V} + d \cdot \abs{V} + 3.5 d \cdot \abs{V} \cdot r_1 + 1.5 r_2,
 \end{equation}
-which is reported in Eq. (5.3) in the paper.
+which is reported in Eq.~(5.3) in the paper.
 %
 The analysis time of RaML should be less than \qty{20}{\second}.
 
 \paragraph{Plot of inferred bounds}
 
-The plot of the inferred bound in \kruskal{} (i.e., Figure~5 in the paper) can be produced
-by moving to the directory \texttt{/home/experiment} and running
+The plot of the inferred bound in \kruskal{} (i.e., Figure~5 in the paper) can
+be produced by moving to the directory \texttt{/home/experiment} and running
 \begin{verbatim}
 # python3 -m visualization.visualization interactive_analysis
 \end{verbatim}
@@ -313,3 +313,9 @@ The generated plot is stored in the PDF file
 
 \subsection{Instantiation 3}
 \label{sec:step-by-step-instructions:instantiation-3}
+
+\paragraph{SMT-based semi-automatic analysis}
+
+\paragraph{Bayesian analysis}
+
+
