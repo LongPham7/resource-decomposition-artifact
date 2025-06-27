@@ -6,11 +6,11 @@
 \subsection{Instantiation 1}
 \label{sec:step-by-step-instructions:instantiation-1}
 
-This section describes how to reproduce evaluation results of
-\labelcref{introduction:instantiation:1} of the resource-decomposition
-framework, where type-based static resource analysis
-AARA~\citep{Hoffmann2011a,Hoffmann2017} and Bayesian data-driven resource
-analysis are combined.
+\labelcref{introduction:instantiation:1} integrates type-based static resource
+analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} and Bayesian data-driven
+resource analysis.
+%
+This instantiation is evaluated on the 13 benchmark programs listed in Table~1.
 
 \paragraph{Benchmark programs}
 
@@ -20,7 +20,7 @@ go by the following names:
 merge_sort, quicksort, bubble_sort, heap_sort, huffman_code,
 unbalanced_binary_search_tree, balanced_binary_search_tree,
 red_black_tree, avl_tree, splay_tree,
-prim_algorithm, dijkstra_algorithm, bellman_ford_algorithm, kruskal_algorithm
+prim_algorithm, dijkstra_algorithm, bellman_ford_algorithm
 \end{verbatim}
 %
 For each benchmark, the original OCaml program $P(x)$ is available in the file
@@ -226,9 +226,9 @@ $ docker cp resource-decomposition:<source-path> <destination-path>
 \subsection{Instantiation 2}
 \label{sec:step-by-step-instructions:instantiation-2}
 
-\labelcref{introduction:instantiation:2} integrates static analysis
-(AARA~\citep{Hoffmann2011a,Hoffmann2017}) and interactive analysis (Iris with
-time credits~\citep{Chargueraud2019}).
+\labelcref{introduction:instantiation:2} integrates static resource analysis
+(AARA~\citep{Hoffmann2011a,Hoffmann2017}) and interactive resource analysis
+(Iris with time credits~\citep{Chargueraud2019}).
 %
 This instantiation is evaluated on Kruskal's algorithm for minimum spanning
 trees.

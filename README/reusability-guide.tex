@@ -2,3 +2,115 @@
 
 \section{Reusability Guide}
 \label{sec:reusability-guide}
+
+\subsection{Source Code}
+
+Inside the artifact, under the directory \texttt{/home}, the code that we
+contribute is located in two directories: \texttt{ocaml-benchmarks} and
+\texttt{experiment}.
+%
+All the other directories under the directory \texttt{/home} come from existing
+tools (with minor modifications).
+
+\paragraph{OCaml}
+
+The directory \texttt{ocaml-benchmarks} contains the OCaml source code of all
+benchmarks for all three instantiations of resource decomposition: the 13
+benchmarks in \labelcref{introduction:instantiation:1}, the benchmark \kruskal{}
+in \labelcref{introduction:instantiation:2}, and the benchmark
+\quicksorttiml{}\footnotemark in \labelcref{introduction:instantiation:3}.
+%
+For each benchmark, its OCaml source code is located in the directory
+\begin{verbatim}
+/home/ocaml-benchmarks/lib/<benchmark-name>
+\end{verbatim}
+%
+The benchmarks \unbalancedbst{} and \balancedbst{} share the same directory:
+\texttt{binary\_search\_tree}.
+%
+Each benchmark's directory contains an original program (annotated with
+\texttt{Raml.tick}), a resource-decomposed program (annotated with
+\texttt{Raml.mark}), and a resource-guarded program (if exists).
+%
+\footnotetext{
+  Although \quicksorttiml{} in \labelcref{introduction:instantiation:3} is not
+  analyzed by AARA, we have prepared its OCaml source code such that we can
+  measure the cost and resource components of \quicksorttiml{} by running its
+  OCaml program.
+  %
+  These measurements are then used to produce a plot of inferred bounds
+  (Figure~6 in the paper).}
+
+Additionally, the directory \texttt{ocaml-benchmarks} contains an infrastructure
+for running OCaml programs to measure their costs and resource components.
+%
+The main OCaml source file is \text{main.ml} in the directory
+\texttt{ocaml-benchmarks/bin}.
+%
+Given command-line arguments, the program \texttt{main.ml} runs a specified
+benchmark program on specified program inputs.
+
+\paragraph{Python}
+
+The directory \texttt{experiment} contains Python code to
+\begin{enumerate*}[label=(\roman*)]
+  \item run OCaml programs (in the directory \texttt{ocaml-benchmarks/lib})
+        to generate datasets $\calD$ of cost and resource-component measurements;
+  \item perform Bayesian inference on the datasets $\calD$; and
+  \item produce tables and plots of inferred bounds.
+\end{enumerate*}
+%
+Under the directory \texttt{experiment}, the Python script
+\begin{verbatim}
+runtime_data_generation/runtime_data_generation.py
+\end{verbatim}
+generates cost and resource-component measurements.
+%
+The Python script \texttt{run\_model.py} performs Bayesian inference.
+%
+The script \texttt{run\_analysis.py} produces tables, and the script
+\begin{verbatim}
+visualization/visualization.py
+\end{verbatim}
+produces plots.
+
+\paragraph{Other directories}
+
+The remaining directories under the directory \texttt{/home} come from other
+artifacts:
+\begin{itemize}
+  \item \texttt{raml} is RaML~\citep{Hoffmann2017,RaML};
+  \item \texttt{clp} is the linear-program (LP) solver CLP~\citep{CLP} used by
+        RaML;
+  \item \texttt{timl} is TiML~\citep{WangWC17}; and
+  \item \texttt{z3-4.4.1-x64-ubuntu-14.04} is the Z3 SMT
+        solver~\citep{DeMoura2008} used by TiML.
+\end{itemize}
+
+\subsection{Build the Docker Image}
+
+To build this artifact, clone this GitHub repository:
+\begin{center}
+  \url{https://github.com/LongPham7/resource-decomposition-artifact}.
+\end{center}
+%
+In addition to the code for building the artifact, the repository contains the
+\LaTeX{} code for producing this \texttt{README.pdf} document.
+%
+In the root directory of the repository, run
+\begin{verbatim}
+$ docker build -t resource-decomposition .
+\end{verbatim}
+where the period at the end of the command indicates that the current (i.e.,
+root) directory contains a Dockerfile.
+%
+This command builds a Docker image named \texttt{resource-decomposition} and
+stores it on your local machine.
+%
+To run the Docker image, follow the instructions in
+\cref{sec:getting-started-guide}.
+
+To save the Docker image in an \texttt{.tar.gz} file, run
+\begin{verbatim}
+$ docker save resource-decomposition | gzip > resource-decomposition.tar.gz
+\end{verbatim}

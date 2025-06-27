@@ -29,13 +29,13 @@ Play with TiML
 [examples/test-suite.pkg](examples/test-suite.pkg) lists all the benchmark examples. You can use this command to run all the examples:
 
   ```
-  ./main.sh examples/stdlib.pkg examples/test-suite.pkg
+  ./main.sh -l examples/stdlib.pkg examples/test-suite.pkg
   ```
 
 or this command to run a single example:
 
   ```
-  ./main.sh examples/stdlib.pkg examples/FILENAME.timl
+  ./main.sh -l examples/stdlib.pkg examples/FILENAME.timl
   ```
 
 Note that [examples/stdlib.pkg](examples/stdlib.pkg) (the standard library) is usually needed.
