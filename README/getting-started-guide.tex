@@ -40,7 +40,8 @@ root@25bfacdb517e:/home/ocaml-benchmarks#
 It creates a Docker container (i.e., a runnable instance of the Docker image),
 which has the same name \texttt{resource-decomposition} as the Docker image.
 %
-The command also starts a shell inside the container.
+The command also starts a shell under the directory
+\texttt{/home/ocaml-benchmarks}.
 %
 If the command does not run properly, you can instead build the image locally on
 your machine as instructed in \cref{sec:reusability-guide}.
@@ -51,9 +52,9 @@ executed in your local machine's terminal.
 
 \subsection{Demonstration of Resource Decomposition's First Instantiation}
 
-This section demonstrates the first instantiation of the resource-decomposition
-technique (\labelcref{introduction:instantiation:1}), which integrates static
-resource analysis and Bayesian data-driven resource analysis.
+This section demonstrates the first instantiation of resource decomposition
+(\labelcref{introduction:instantiation:1}), which integrates static and Bayesian
+data-driven resource analyses.
 %
 The static part runs a program-analysis tool RaML~\citep{RaML}.
 %
@@ -61,11 +62,12 @@ It implements type-based static resource analysis Automatic Amortized Resource
 Analysis (AARA)~\citep{Hoffmann2011a,Hoffmann2017} and automatically infers
 polynomial cost bounds of input OCaml programs.
 %
-On the other hand, the data-driven part runs Bayesian inference to statistically
-infer a symbolic bound of a resource component using a dataset of the resource
-component's measurements.
+The data-driven part, on the other hand, runs Bayesian inference to
+statistically infer a symbolic bound of a resource component using its
+measurements.
 
-We consider the benchmark program \mergesort{} implemented in OCaml.
+For illustration, let us consider the benchmark \mergesort{} implemented in
+OCaml.
 %
 The resource metric of interest is the number of function calls (including all
 recursive calls and helper functions).
@@ -81,12 +83,9 @@ Inside the Docker container, the current working directory should be
 /home/ocaml-benchmarks
 \end{verbatim}
 %
-This directory contains the OCaml source code of all benchmark programs used in
-\labelcref{introduction:instantiation:1,introduction:instantiation:2}.
-
 Let $P(x)$ denote an original program of \mergesort{}.
 %
-To view the source code of the original program $P(x)$, run
+To view its source code, run
 \begin{verbatim}
 # cat lib/merge_sort/merge_sort.ml
 \end{verbatim}
@@ -94,7 +93,7 @@ To view the source code of the original program $P(x)$, run
 This OCaml code is annotated with the construct \texttt{Raml.tick 1.0} to
 specify resource usage: it increments a cost counter by 1.0.
 %
-This construct is inserted at the start of every function in the source code.
+This construct is inserted at the start of every function.
 
 \paragraph{Static analysis on the original program}
 
@@ -105,7 +104,7 @@ To invoke RaML on \mergesort{}, run a python script:
 # python3 raml/run_raml.py benchmark merge_sort standard
 \end{verbatim}
 %
-It prints out the inference result:
+It prints out the inference result of static resource analysis:
 \begin{Verbatim}[fontsize=\footnotesize]
 == merge_sort :
 
@@ -138,17 +137,16 @@ bound of \mergesort{} inferred by RaML:
 \begin{equation}
   1 - 2.5 n + 3.5 n^2,
 \end{equation}
-where $n$ is the length of the input list.
+where $n$ is the input size.
 %
-This quadratic bound is sound (i.e., it is a valid worst-case cost bound for all
-input sizes).
-%
-But it is not an asymptotically tight $O(n \log n)$ bound of \mergesort{}.
+Although this quadratic bound is sound (i.e., it is a valid worst-case cost
+bound for all inputs), it is not an asymptotically tight $O(n \log n)$ bound of
+\mergesort{}.
 
 \paragraph{Resource-decomposed and resource-guarded programs}
 
-To obtain an asymptotically tighter cost bound of \mergesort{}, we integrate
-AARA and Bayesian data-driven analysis via resource decomposition.
+To obtain a tighter cost bound of \mergesort{}, we integrate AARA and Bayesian
+data-driven analysis via resource decomposition.
 %
 We set a resource component to be the recursion depth of the function
 \texttt{merge\_sort} in the original program $P(x)$.
@@ -157,8 +155,7 @@ To specify this resource component, the original program $P(x)$ is annotated
 with the construct \texttt{Raml.mark}, resulting in a resource-decomposed
 program $P_{\mathrm{rd}}(x)$.
 %
-To view the source code of the resource-decomposed program $P_{\mathrm{rd}}(x)$,
-run
+To view its source code, run
 \begin{verbatim}
 # cat lib/merge_sort/merge_sort_data_collection.ml
 \end{verbatim}
@@ -184,7 +181,7 @@ original program $P(x)$ by manually extending it with a resource guard.
 \paragraph{Static analysis on the resource-guarded program}
 
 To infer an overall cost bound of the resource-guarded program
-$P_{\mathrm{rg}}(x, r)$, we run RaML:
+$P_{\mathrm{rg}}(x, r)$, invoke RaML by running
 \begin{verbatim}
 # python3 raml/run_raml.py benchmark merge_sort counter
 \end{verbatim}
@@ -243,12 +240,8 @@ First, switch the working directory to \texttt{/home/experiment}:
 # cd ../experiment
 \end{verbatim}
 %
-This directory contains Python code for creating datasets of resource-component
-measurements, analyzing these datasets by Bayesian inference, and producing
-plots of inferred bounds.
-
 We run the resource-decomposed program $P_{\mathrm{rd}}(x)$ on many input lists
-to create a dataset $\calD$ of input sizes and recursion depths.
+to create a dataset $\calD$ of recursion depths' measurements.
 %
 To this end, run
 \begin{verbatim}
@@ -298,9 +291,9 @@ To print out Bayesian inference's analysis time, run
 # python3 -m run_analysis time
 \end{verbatim}
 %
-It displays a table of Bayesian inference's analysis time for all 13 benchmarks
-in \labelcref{introduction:instantiation:1}, including \mergesort{}, and also
-the benchmark \quicksorttiml{} used in \labelcref{introduction:instantiation:3}.
+It shows a table of Bayesian inference's analysis time for all 13 benchmarks in
+\labelcref{introduction:instantiation:1}, including \mergesort{}, and also the
+benchmark \quicksorttiml{} in \labelcref{introduction:instantiation:3}.
 %
 The table should look like
 \begin{verbatim}
@@ -344,17 +337,16 @@ because we have fixed the seeds of all pseudo-random number generators used in
 the artifact.
 
 The soundness percentage 56.1\% (for coefficients) returned by the artifact
-deviates from the percentage reported in Table~1 in the paper (i.e., 59.5\%).
+deviates from the percentage reported in Table~1 in the paper, namely 59.5\%.
 %
-We suspect that this deviation is due to a different version of the
-\texttt{pystan} library (i.e., the Python-Stan interface) used in the
-artifact.
+We suspect that this deviation is due to the different versions of Python
+libraries used in the artifact.
 %
-Unfortunately, we cannot figure out which version of the \texttt{pystan} library
-was used when we conducted evaluation for the paper.
+Unfortunately, we cannot figure out which versions were used when we conducted
+evaluation for the paper.
 %
 Nonetheless, the soundness percentages produced by the artifact only deviate
-slightly from those reported in Table~1 of the paper.
+slightly from those reported in Table~1.
 %
-Hence, these deviations do not affect the key conclusion of the paper, namely
-the effectiveness of the resource-decomposition framework.
+These deviations do not affect the key conclusion of the paper, namely the
+effectiveness of the resource-decomposition framework.

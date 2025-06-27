@@ -44,7 +44,7 @@ Each benchmark's directory contains an original program (annotated with
 Additionally, the directory \texttt{ocaml-benchmarks} contains an infrastructure
 for running OCaml programs to measure their costs and resource components.
 %
-The main OCaml source file is \text{main.ml} in the directory
+The main OCaml source file is \texttt{main.ml} in the directory
 \texttt{ocaml-benchmarks/bin}.
 %
 Given command-line arguments, the program \texttt{main.ml} runs a specified
@@ -54,10 +54,10 @@ benchmark program on specified program inputs.
 
 The directory \texttt{experiment} contains Python code to
 \begin{enumerate*}[label=(\roman*)]
-  \item run OCaml programs (in the directory \texttt{ocaml-benchmarks/lib})
+  \item run the OCaml programs in the directory \texttt{ocaml-benchmarks/lib}
         to generate datasets $\calD$ of cost and resource-component measurements;
   \item perform Bayesian inference on the datasets $\calD$; and
-  \item produce tables and plots of inferred bounds.
+  \item produce tables and plots of inferred symbolic bounds.
 \end{enumerate*}
 %
 Under the directory \texttt{experiment}, the Python script
@@ -79,11 +79,11 @@ produces plots.
 The remaining directories under the directory \texttt{/home} come from other
 artifacts:
 \begin{itemize}
-  \item \texttt{raml} is RaML~\citep{Hoffmann2017,RaML};
-  \item \texttt{clp} is the linear-program (LP) solver CLP~\citep{CLP} used by
+  \item \texttt{raml} for RaML~\citep{Hoffmann2017,RaML};
+  \item \texttt{clp} for the linear-program (LP) solver CLP~\citep{CLP} used by
         RaML;
-  \item \texttt{timl} is TiML~\citep{WangWC17}; and
-  \item \texttt{z3-4.4.1-x64-ubuntu-14.04} is the Z3 SMT
+  \item \texttt{timl} for TiML~\citep{WangWC17}; and
+  \item \texttt{z3-4.4.1-x64-ubuntu-14.04} for the Z3 SMT
         solver~\citep{DeMoura2008} used by TiML.
 \end{itemize}
 
@@ -93,13 +93,13 @@ Suppose you have your own program $P(x)$ that you want to analyze by resource
 decomposition.
 %
 If the resource analysis of the program $P(x)$ uses AARA (e.g.,
-\labelcref{introduction:instantiation:1,introduction:instantiation:2}), you create
-a new directory for this program:
+\labelcref{introduction:instantiation:1,introduction:instantiation:2}), you
+create a new directory for this program:
 \begin{verbatim}
 /home/ocaml-benchmarks/lib/<benchmark-name>
 \end{verbatim}
 %
-In this directory, you place three OCaml source files for the original program
+In this directory, you place three OCaml source files: the original program
 $P(x)$, the resource-decomposed program $P_{\mathrm{rd}}(x)$, and the
 resource-guarded program $P_{\mathrm{rg}}(x, r)$.
 %
@@ -111,9 +111,9 @@ by enabling it to take a command-line argument specifying your custom program.
 
 If the analysis of the program $P(x)$ uses Bayesian inference (e.g.,
 \labelcref{introduction:instantiation:1,introduction:instantiation:3}), you
-should update the Python code in the directory \texttt{/home/experiment}
-so that the relevant Python scripts can take in command-line arguments
-specifying your program.
+update the Python code in the directory \texttt{/home/experiment} so that the
+relevant Python scripts can take in command-line arguments specifying your
+program.
 %
 For instance, you should extend the following Python file, which lists various
 benchmark parameters (e.g., the name of the benchmark, its ground-truth bound,
@@ -129,8 +129,8 @@ To build this artifact, clone this GitHub repository:
   \url{https://github.com/LongPham7/resource-decomposition-artifact}.
 \end{center}
 %
-In addition to the code for building the artifact, the repository contains the
-\LaTeX{} code for producing this \texttt{README.pdf} document.
+In addition to the code for building the artifact, the GitHub repository
+contains the \LaTeX{} source files of this \texttt{README.pdf} document.
 %
 In the root directory of the repository, run
 \begin{verbatim}
@@ -139,8 +139,8 @@ $ docker build -t resource-decomposition .
 where the period at the end of the command indicates that the current (i.e.,
 root) directory contains a Dockerfile.
 %
-This command builds a Docker image named \texttt{resource-decomposition} and
-stores it on your local machine.
+This command builds a Docker image named \texttt{resource-decomposition},
+storing it on your local machine.
 %
 To run the Docker image, follow the instructions in
 \cref{sec:getting-started-guide}.

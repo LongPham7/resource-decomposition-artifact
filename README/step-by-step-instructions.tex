@@ -10,12 +10,11 @@
 analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} and Bayesian data-driven
 resource analysis.
 %
-This instantiation is evaluated on the 13 benchmark programs listed in Table~1.
+This instantiation is evaluated on the 13 benchmark programs in Table~1.
 
 \paragraph{Benchmark programs}
 
-In the artifact, the 13 benchmarks for \labelcref{introduction:instantiation:1}
-go by the following names:
+In the artifact, the 13 benchmarks go by the following names:
 \begin{verbatim}
 merge_sort, quicksort, bubble_sort, heap_sort, huffman_code,
 unbalanced_binary_search_tree, balanced_binary_search_tree,
@@ -27,19 +26,19 @@ For each benchmark, the original OCaml program $P(x)$ is available in the file
 \begin{verbatim}
 /home/ocaml-benchmarks/lib/<benchmark-name>/<benchmark-name>.ml
 \end{verbatim}
-where \texttt{<benchmark-name>} is replaced the benchmark program's name (e.g.,
-\texttt{merge\_sort}).
+where \texttt{<benchmark-name>} is replaced with the benchmark program's name
+(e.g., \texttt{merge\_sort}).
 %
-For the two benchmarks \unbalancedbst{} and \balancedbst{}, however, they share
-the same OCaml source file:
+The two benchmarks \unbalancedbst{} and \balancedbst{} share the same OCaml
+source file:
 \begin{verbatim}
 /home/ocaml-benchmarks/lib/binary_search_tree/binary_search_tree.ml
 \end{verbatim}
 
 \paragraph{Static analysis}
 
-To perform AARA~\citep{Hoffmann2011a,Hoffmann2017} (implemented in the tool
-RaML~\citep{RaML}), go to this directory:
+To perform AARA~\citep{Hoffmann2011a,Hoffmann2017} implemented in
+RaML~\citep{RaML}, go to this directory:
 \begin{verbatim}
 # cd /home/ocaml-benchmarks/
 \end{verbatim}
@@ -49,8 +48,8 @@ If you wish to run RaML on an original OCaml program $P(x)$, run
 # python3 raml/run_raml.py benchmark <benchmark-name> standard
 \end{verbatim}
 %
-The inference result (and analysis time) is printed out on the screen and also
-saved in the file
+The inference result (and analysis time) is printed out on the screen and saved
+in the file
 \begin{verbatim}
 /home/ocaml-benchmarks/raml/output/<benchmark-name>/raml_output_standard.txt
 \end{verbatim}
@@ -60,8 +59,8 @@ column (titled ``AARA Baselines Basic'') of Table~1 in the paper.
 
 The analysis time of RaML varies greatly from benchmark to benchmark.
 %
-For instance, \mergesort{}'s original program only takes less than
-\qty{1.0}{\second}, while \redblacktree{}'s original program can take around
+For instance, \mergesort{}'s original program takes less than
+\qty{1.0}{\second}, while \redblacktree{}'s original program can take as long as
 \qty{480}{\second}.
 
 The resource-guarded program $P_{\mathrm{rg}}(x, r)$ of each benchmark is
@@ -77,13 +76,13 @@ resource guards.
 Our artifact does not \emph{automatically} perform this program transformation,
 although it is possible to automate (as formulated in \S3.3 of the paper).
 
-To run RaML on a resource-guarded program, run
+To run RaML on a resource-guarded program $P_{\mathrm{rg}}(x, r)$, run
 \begin{verbatim}
 # python3 raml/run_raml.py benchmark <benchmark-name> counter
 \end{verbatim}
 %
-The inference result (and analysis time) is printed out on the screen and also
-saved in the file
+The inference result (and analysis time) is printed out on the screen and saved
+in the file
 \begin{verbatim}
 /home/ocaml-benchmarks/raml/output/<benchmark-name>/raml_output_counter.txt
 \end{verbatim}
@@ -101,7 +100,7 @@ run
 # python3 raml/run_raml.py benchmark <benchmark-name> both
 \end{verbatim}
 
-Finally, to run RaML on (original and/or resource-guarded) programs of all
+Finally, to run RaML on the original and/or resource-guarded programs of all
 relevant benchmarks (i.e., the 13 benchmarks in
 \labelcref{introduction:instantiation:1} and the benchmark \kruskal{} in
 \labelcref{introduction:instantiation:2}), run
@@ -133,8 +132,8 @@ Then run
 # python3 -m runtime_data_generation.runtime_data_generation benchmark <benchmark-name>
 \end{verbatim}
 %
-The generated dataset $\calD$ (and also analysis time of Bayesian inference) is
-stored in a JSON file
+The generated dataset $\calD$ (and the analysis time of Bayesian inference) is
+saved in a JSON file
 \begin{verbatim}
 /home/experiment/bin/<benchmark-name>/bucket1/runtime_cost_data/runtime_cost_data.json
 \end{verbatim}
@@ -148,8 +147,8 @@ benchmarks in \labelcref{introduction:instantiation:1} and the benchmark
 
 \paragraph{Bayesian inference}
 
-We perform Bayesian inference on the observed data $\calD$ to infer a posterior
-distribution of recursion-depth symbolic bounds.
+We perform Bayesian inference on observed data $\calD$ to infer a posterior
+distribution of recursion-depth bounds.
 %
 This is achieved by running
 \begin{verbatim}
@@ -164,8 +163,8 @@ The analysis time of Bayesian inference should be less than \qty{3}{\minute} in
 all benchmarks (and less than \qty{1}{\minute} in most benchmarks), assuming
 that it is not the first time the command is executed.
 %
-Otherwise, the command can take longer when it is first executed in order to
-build efficient machine code for a sampling algorithm.
+Otherwise, the command can take an additional \qty{45}{\second} to build
+efficient machine code for a sampling algorithm.
 
 To perform Bayesian inference on all relevant benchmarks (i.e., the 13
 benchmarks in \labelcref{introduction:instantiation:1} and the benchmark
@@ -176,7 +175,7 @@ benchmarks in \labelcref{introduction:instantiation:1} and the benchmark
 
 \paragraph{Table of experiment results}
 
-To display the analysis time of Bayesian analysis of all relevant benchmarks
+To display the analysis time of Bayesian analysis in all relevant benchmarks
 (i.e., the 13 benchmarks in \labelcref{introduction:instantiation:1} and the
 benchmark \quicksorttiml{} in \labelcref{introduction:instantiation:3}), run the
 following command in the directory \texttt{/home/experiment/}:
@@ -184,8 +183,8 @@ following command in the directory \texttt{/home/experiment/}:
 # python3 -m run_analysis time
 \end{verbatim}
 %
-This analysis time is reported in the second-to-last column (titled ``Analysis
-Time Data-Driven'') of Table~1 in the paper.
+The analysis time of Bayesian inference is reported in the second-to-last column
+(titled ``Analysis Time Data-Driven'') of Table~1 in the paper.
 
 To calculate and display the percentages of sound resource-component bounds in
 all relevant benchmarks, run
@@ -211,13 +210,16 @@ The generated PDF files are stored in the directory
 /home/experiment/images/<benchmark-name>/bucket1
 \end{verbatim}
 %
-For instance, in the directory \texttt{/home/experiment/images/merge\_sort/bucket1}
+For instance, in the directory
+\begin{verbatim}
+/home/experiment/images/merge\_sort/bucket1
+\end{verbatim}
 for the benchmark \mergesort{}, we have two plots:
 \begin{verbatim}
 posterior_distributions.pdf, posterior_distributions_no_legend.pdf
 \end{verbatim}
 
-To transfer plots from the Docker container to your local machine, run the
+To transfer files from the Docker container to your local machine, run the
 following command in your local machine's terminal:
 \begin{verbatim}
 $ docker cp resource-decomposition:<source-path> <destination-path>
@@ -232,18 +234,6 @@ $ docker cp resource-decomposition:<source-path> <destination-path>
 %
 This instantiation is evaluated on Kruskal's algorithm for minimum spanning
 trees.
-%
-The benchmark \kruskal{} is implemented in OCaml and uses a union-find data
-structure.
-%
-Given an input weighted graph, \kruskal{} first runs \mergesort{} to sort the
-edges in the ascending order of their weights.
-%
-Initially, each vertex in the graph forms its own (singleton) spanning tree.
-%
-\kruskal{} then examines each edge in their sorted order, incrementally building
-a spanning tree by merging two disjoint sets whenever they are connected by an
-edge.
 
 \paragraph{Static analysis}
 
@@ -295,7 +285,7 @@ The inferred bound is translated to
   f (d, \abs{V}, r_1, r_2) = 7 + 3.5 \abs{V} + d \cdot \abs{V} + 3.5 d \cdot \abs{V} \cdot r_1 + 1.5 r_2,
 \end{equation}
 which is parametric in the maximum degree $d$, the number of vertices $\abs{V}$,
-and two resource guards (i.e., $r_1$ and $r_2$).
+and two resource guards $r_1$ and $r_2$.
 %
 This inferred bound is reported in Eq.~(5.3) in the paper.
 %
@@ -303,13 +293,14 @@ The analysis time of RaML should be less than \qty{20}{\second}.
 
 \paragraph{Plot of inferred bounds}
 
-The plot of the inferred bound in \kruskal{} (i.e., Figure~5 in the paper) can
-be produced by moving to the directory \texttt{/home/experiment} and running
+The plots of inferred suymbolic bound in \kruskal{} (i.e., Figure~5 in the
+paper) are produced by moving to the directory \texttt{/home/experiment} and
+running
 \begin{verbatim}
 # python3 -m visualization.visualization interactive_analysis
 \end{verbatim}
 %
-The generated plot is stored in the PDF file
+The generated plots are stored in the PDF file
 \begin{verbatim}
 /home/experiment/images/kruskal_algorithm/bucket1/interactive_analysis_result.pdf
 \end{verbatim}
@@ -321,16 +312,17 @@ The generated plot is stored in the PDF file
 resource analysis (TiML~\citep{WangWC17}) and Bayesian data-driven resource
 analysis.
 %
-This instantiation is evaluated on the benchmark \quicksorttiml{}, where the
-comparison function used inside quicksort has logarithmic cost in the maximum
-input natural numbers.
+This instantiation is evaluated on the benchmark \quicksorttiml{}, a version of
+quicksort where the comparison function used inside quicksort has logarithmic
+cost in the maximum input natural numbers.
 
 \paragraph{SMT-based semi-automatic analysis}
 
 In TiML~\citep{WangWC17}, a user manually annotates the source code of a
 Standard-ML program with a candidate cost bound.
 %
-The bound is then automatically verified by an SMT solver.
+The bound is then automatically verified by an SMT solver (particularly
+Z3~\citep{DeMoura2008}).
 
 To view the annotated Standard-ML program of \quicksorttiml{}, go to this
 directory:
@@ -348,9 +340,9 @@ In the source file, the function \texttt{quicksort} is annotated with a candidat
 idx T_quicksort = fn m n => $n * ($n + 1.0) * ($m + 2.0) + 2.0 * $n
 \end{verbatim}
 %
-This bound is also displayed in Eq~(6.1) in the paper.
+This bound is also displayed in Eq~(6.1) in our paper.
 
-To verify the candidate bound by TiML, run
+To verify the candidate bound using TiML, run
 \begin{verbatim}
 # ./main.sh -l examples/basic-rd.timl examples/qsort-rd.timl
 \end{verbatim}
@@ -389,7 +381,7 @@ In the directory \texttt{/home/experiment}, run
 # python3 -m run_model benchmark quicksort_timl
 \end{verbatim}
 %
-This command can take around \qty{150}{\second} to run.
+This command takes around \qty{150}{\second} to run.
 %
 Posterior samples are stored in the file
 \begin{verbatim}
@@ -404,15 +396,15 @@ To display the percentage of sound resource-component bounds in
 # python3 -m run_analysis soundness all
 \end{verbatim}
 %
-In the table printed out, the soundness percentage of \quicksorttiml{} should be
-70.1\%, which is reported in L1033 in the paper.
+The table reports that the soundness percentage of \quicksorttiml{} is 70.1\%,
+which is also reported in L1033 in the paper.
 
-To generate a plot of inferred bounds (Figure~6), run
+To generate plots of inferred bounds (Figure~6), run
 \begin{verbatim}
 # python3 -m visualization.visualization quicksort_timl
 \end{verbatim}
 %
-The generated plot is stored in the PDf file
+The generated plots are saved in the PDf file
 \begin{verbatim}
 /home/experiment/images/quicksort_timl/bucket1/posterior_distributions.pdf
 \end{verbatim}

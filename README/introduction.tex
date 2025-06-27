@@ -51,9 +51,8 @@ The first resource analysis is performed on the resource-decomposed program
 $P_{\mathrm{rd}}(x)$, inferring a symbolic bound $g(x)$ of the resource
 component.
 %
-Next, the resource-decomposed program $P_{\mathrm{rd}}(x)$ is extended with a
-numeric variable $r$, called a resource guard, which tracks the user-specified
-resource component.
+Meanwhile, the original program $P(x)$ is extended with a numeric variable $r$,
+called a resource guard, which tracks the user-specified resource component.
 %
 The resulting program $P_{\mathrm{rd}}(x, r)$ is called a \emph{resource-guarded
   program}.
@@ -62,8 +61,10 @@ The second resource analysis is performed on the resource-guarded program to
 infer its overall cost bound $f(x, r)$.
 %
 Finally, an overall cost bound of the original program $P(x)$ is obtained by
-substituting the resource-component bound $r \leq g(x)$ for the resource guard
-$r$ in the bound $f(x, r)$, yielding $f(x, g(x))$.
+composing the two inference results.
+%
+That is, we substitute the resource-component bound $r \leq g(x)$ for the
+resource guard $r$ in the bound $f(x, r)$, yielding $f(x, g(x))$.
 
 Our artifact contains code for evaluating three concrete instantiations of the
 resource-decomposition technique (\S4--6 in the paper).
@@ -86,16 +87,16 @@ techniques:
 \labelcref{introduction:instantiation:1} is evaluated on 13 benchmarks listed in
 Table~1 of the paper.
 %
-\labelcref{introduction:instantiation:2} is evaluated on Kruskal's algorithm for
-minimum spanning trees.
+\labelcref{introduction:instantiation:2} is evaluated on Kruskal's algorithm
+(\kruskal{}) for minimum spanning trees.
 %
 \labelcref{introduction:instantiation:3} is evaluated on a version of quicksort
-where integer comparison has logarithmic cost in the maximum size of integers
-(i.e., linear cost in the number of bits).
+(\quicksorttiml{}) where the cost of integer comparison is logarithmic in the
+maximum input number (i.e., linear cost in the number of bits).
 
-Out of the six analyses (i.e., two resource analyses employed in each
-instantiation), the artifact performs five of them: all except the interactive
-resource analysis in the second instantiation (\S5).
+Out of the six analyses (i.e., two resource analyses in each instantiation), the
+artifact performs five of them: all except the interactive resource analysis in
+the second instantiation (\S5).
 %
 The inference result of the interactive analysis is available in
 \citet{Chargueraud2019} and hence is not included in our artifact.
@@ -107,8 +108,7 @@ The artifact supports the following claims in the paper:
   \item \labelcref{introduction:instantiation:1}: Percentages of sound bounds
         and analysis time, which are listed in the last four columns of Table~1.
   \item \labelcref{introduction:instantiation:1}: Plots of posterior
-        distributions of the 13 benchmarks in the first instantiation
-        (Figures~3,4, 7--20).
+        distributions of the 13 benchmarks (Figures~3,4, 7--20).
   \item \labelcref{introduction:instantiation:2}: Cost bound inferred by static
         analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} for the
         resource-guarded program of Kruskal's algorithm.
@@ -117,8 +117,8 @@ The artifact supports the following claims in the paper:
   \item \labelcref{introduction:instantiation:2}: Plots of inferred symbolic
         bounds (Figure~5).
   \item \labelcref{introduction:instantiation:3}: Cost bound inferred by
-        TiML~\citep{WangWC17} for quicksort, which is displayed in Eq.~(6.1) in
-        the paper.
+        TiML~\citep{WangWC17} for the benchmark \quicksorttiml{}, which is
+        displayed in Eq.~(6.1) in the paper.
   \item \labelcref{introduction:instantiation:3}: Plots of inferred symbolic
         bounds (Figure~6).
 \end{itemize}
