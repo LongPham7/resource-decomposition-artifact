@@ -87,6 +87,41 @@ artifacts:
         solver~\citep{DeMoura2008} used by TiML.
 \end{itemize}
 
+\subsection{Custom Input Programs for Resource Decomposition}
+
+Suppose you have your own program $P(x)$ that you want to analyze by resource
+decomposition.
+%
+If the resource analysis of the program $P(x)$ uses AARA (e.g.,
+\labelcref{introduction:instantiation:1,introduction:instantiation:2}), you create
+a new directory for this program:
+\begin{verbatim}
+/home/ocaml-benchmarks/lib/<benchmark-name>
+\end{verbatim}
+%
+In this directory, you place three OCaml source files for the original program
+$P(x)$, the resource-decomposed program $P_{\mathrm{rd}}(x)$, and the
+resource-guarded program $P_{\mathrm{rg}}(x, r)$.
+%
+You also update the main OCaml source file
+\begin{verbatim}
+/home/ocaml-benchmarks/bin/main.ml
+\end{verbatim}
+by enabling it to take a command-line argument specifying your custom program.
+
+If the analysis of the program $P(x)$ uses Bayesian inference (e.g.,
+\labelcref{introduction:instantiation:1,introduction:instantiation:3}), you
+should update the Python code in the directory \texttt{/home/experiment}
+so that the relevant Python scripts can take in command-line arguments
+specifying your program.
+%
+For instance, you should extend the following Python file, which lists various
+benchmark parameters (e.g., the name of the benchmark, its ground-truth bound,
+and the number of resource components):
+\begin{verbatim}
+/home/experiment/benchmark_data/benchmark_parameters.py
+\end{verbatim}
+
 \subsection{Build the Docker Image}
 
 To build this artifact, clone this GitHub repository:
