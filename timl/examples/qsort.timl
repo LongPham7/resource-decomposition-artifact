@@ -1,0 +1,44 @@
+(* Quick sort *)
+
+structure QSort = struct
+
+open Basic
+open List
+
+datatype plist 'a : {Nat} =
+         PList {p q : Nat} of list 'a {p} * list 'a {q} --> plist 'a {p + q}
+
+idx T_list_pivot = fn m n => 4.0 * ($m + 1.0) * ($n + 1.0)
+fun list_pivot ['a] {m len : Nat} (le : 'a * 'a -- $m --> bool) (l : list 'a {len}, x : 'a) return plist 'a {len} using T_list_pivot m len =
+  case l of
+      [] => PList ([], [])
+    | hd :: tl =>
+          case list_pivot le (tl, x) of
+              PList (left, right) =>
+              if le (hd, x) then
+                  PList (hd :: left, right)
+              else
+                  PList (left, hd :: right)
+
+idx T_list_append = fn n => 2.0 * $n
+fun list_append ['a] {len1 len2 : Nat} (l1 : list 'a {len1}, l2 : list 'a {len2}) return list 'a {len1 + len2} using T_list_append len1 =
+  case l1 of
+      [] => l2
+    | hd :: tl => hd :: list_append (tl, l2)
+
+idx T_list_qsort = fn m n => 4.0 * ($m + 10.0) * ($n * $n + 20.0 * $n)
+fun list_qsort ['a] {m len : Nat} (le : 'a * 'a -- $m --> bool) (l : list 'a {len}) return list 'a {len} using T_list_qsort m len =
+  case l of
+      [] => []
+    | hd :: tl =>
+      (* need time annotation here to forget the two local index variables which are the lengths of the two partitions. It is very hard for the typechecker to figure out how to replace these two lengths with the total length of the input list *)
+      case list_pivot le (tl, hd) return using 4.0 * $m * $len * $len + 74.0 * $m * $len + 40.0 * $len * $len + 750.0 * $len - 100.0 of
+          PList (left, right) =>
+          let
+              val sorted_left = list_qsort le left
+              val sorted_right = list_qsort le right
+          in
+              list_append (sorted_left, hd :: sorted_right)
+          end
+            
+end

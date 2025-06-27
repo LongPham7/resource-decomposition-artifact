@@ -1,0 +1,109 @@
+(* Braun tree with invariant for balancedness and sortedness *)
+
+structure BraunTreeSortedness = struct
+
+open Basic
+open Nat
+       
+datatype braun_tree : {Nat(*min element*)} {Nat(*size*)} =
+         Leaf of braun_tree {0} {0}
+       | Node {size lk rk k : Nat} {(size >= 1 -> k <= lk) /\ (size >= 2 -> k <= rk)} of nat {k} * braun_tree {lk} {ceil ($size/2)} * braun_tree {rk} {floor ($size/2)} --> braun_tree {k} {size+1}
+
+absidx T_insert : BigO (fn n => log2 $n) with
+fun insert {size k x : Nat} (tr : braun_tree {k} {size}) (x : nat {x}) return braun_tree {ite (size == 0) x (x min k)} {size + 1} using T_insert size =
+    case tr of
+        Leaf => @Node {0} {} {} {} {} (x, Leaf, Leaf)
+      | @Node {size' _ _ _ _} (y, l, r) =>
+        let
+          val MinMaxResult (smaller, bigger) = min_max le (x, y)
+        in
+          @Node {size' + 1} {_} {_} {_} {_} (smaller, insert r bigger, l)
+        end
+end
+
+absidx T_peek : Time with
+fun peek {size k : Nat} (tr : braun_tree {k} {size + 1}) return nat {k} using T_peek =
+    case tr of
+        Node (x, _, _) => x
+      | Leaf => never
+end
+
+absidx T : Time with
+fun peek_option {size k : Nat} (tr : braun_tree {k} {size}) return option (nat {k}) using T =
+    case tr of
+        Leaf => NONE
+      | Node (x, _, _) => SOME x
+end
+
+datatype peek_option_result {k size : Nat} =
+         PeekSOME {size > 0} of nat {k} --> peek_option_result {k} {size}
+       | PeekNONE {size = 0} of peek_option_result {k} {size}
+
+absidx T : Time with
+fun peek_option {size k : Nat} (tr : braun_tree {k} {size}) return peek_option_result {k} {size} using T =
+    case tr of
+        Leaf => PeekNONE
+      | Node (x, _, _) => PeekSOME x
+end
+
+datatype le_le {a b a' b' : Nat} =
+         LeLe {a <= b /\ a' <= b'} of le_le {a} {b} {a'} {b'}
+       | NotLeLe {~ (a <= b /\ a' <= b')} of le_le {a} {b} {a'} {b'}
+
+fun le_le {m : Time} {a b a' b' : Nat} (le : forall {x y : Nat}, nat {x} * nat {y} -- m --> le_result {x} {y}) (a : nat {a}, b : nat {b}) (a' : nat {a'}, b' : nat {b'}) return le_le {a} {b} {a'} {b'} =
+    case (le (a, b), le (a', b')) of
+        (Le, Le) => LeLe
+      | (Le, Gt) => NotLeLe
+      | (Gt, Le) => NotLeLe
+      | (Gt, Gt) => NotLeLe
+
+absidx T_sift : BigO (fn n => log2 $n) with
+fun sift {size lk rk x : Nat} (x : nat {x}, l : braun_tree {lk} {ceil ($size/2)}, r : braun_tree {rk} {floor ($size/2)}) return braun_tree {ite (size == 0) x (ite (size == 1) (x min lk) (x min lk min rk))} {size+1} using T_sift size =
+    case (l, r) of
+        (Leaf, Leaf) =>
+        @Node {0} {} {} {} {} (x, Leaf, Leaf)
+      | (Node (y, _, _), Leaf) =>
+        let
+          val MinMaxResult (smaller, bigger) = min_max le (x, y)
+        in
+          @Node {1} {_} {_} {_} {_} (smaller, @Node {0} {} {} {} {} (bigger, Leaf, Leaf), Leaf)
+        end
+      | (@Node {nl' _ _ _ _} (lx, l1, l2), @Node {nr' _ _ _ _} (rx, r1, r2)) =>
+        (case (le_le @le (x, lx) (x, rx), le (lx, rx)) of
+             (LeLe, _) =>
+             @Node {size} {} {} {} {} (x, l, r)
+           | (NotLeLe, Le) =>
+             @Node {size} {} {} {} {} (lx, @sift {nl'} {_} {_} {_} (x, l1, l2), r)
+           | (NotLeLe, Gt) =>
+             @Node {size} {} {} {} {} (rx, l, @sift {nr'} {_} {_} {_} (x, r1, r2))
+        )
+      | _ => never
+end
+
+datatype pop {k size : Nat} =
+         Pop {k' : Nat} {size > 0 -> k <= k'} of nat {k} * braun_tree {k'} {size} --> pop {k} {size}
+                                                 
+absidx T_pop : BigO (fn n => log2 $n * log2 $n) with
+fun pop {size k : Nat} (tr : braun_tree {k} {size + 1}) return pop {k} {size} using T_pop size =
+    case tr of
+        Node (x, l, r) =>
+        (case (l, r) of
+             (Leaf, Leaf) => Pop (x, Leaf)
+           | (Node (y, _, _), Leaf) =>
+             Pop (x, @Node {0} {} {} {} {} (y, Leaf, Leaf))
+           | (@Node {nl' _ _ _ _} (lx, _, _), @Node {nr' _ _ _ _} (rx, r1, r2)) =>
+             let
+               val Pop (_, l) = @pop {nl'} {} l
+             in
+               case le (lx, rx) of
+                   Le =>
+                   Pop (x, @Node {nl'+1+nr'} {} {} {} {} (lx(* rx *), r, l))
+                 | Gt =>
+                   Pop (x, @Node {nl'+1+nr'} {} {} {} {} (rx(* lx *), @sift {nr'} {} {} {} (lx, r1, r2), l))
+             end
+           | _ => never
+        )
+      | Leaf => never
+end
+
+end

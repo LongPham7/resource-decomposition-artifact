@@ -1,0 +1,41 @@
+structure FoldEvolve = struct
+open List
+       
+val ['a 'b] foldl =
+ fn {m : Nat} (f : 'a * 'b -- $m --> 'b) =>
+    let
+        fun foldl {n : Nat} (y : 'b, xs : list 'a {n}) return 'b using $(m + 2) * $n =
+            case xs of
+                Nil => y
+              | Cons (x, xs) => foldl (f (x, y), xs)
+    in
+        foldl
+    end
+
+absidx h : BigO (fn m n => $m * $n) with
+val ['a 'b] foldl =
+ fn {m : Nat} (f : 'a * 'b -- $m --> 'b) =>
+    let
+        fun foldl {n : Nat} (y : 'b, xs : list 'a {n}) return 'b using h m n =
+            case xs of
+                Nil => y
+              | Cons (x, xs) => foldl (f (x, y), xs)
+    in
+        foldl
+    end
+end
+
+absidx h : BigO (fn m n => $m * $n) with
+val ['a 'b] foldl =
+ fn {m : Nat} (f : 'a * 'b -- $m --> 'b) =>
+    let
+        fun foldl {n : Nat} y (xs : list 'a {n}) return 'b using h m n =
+            case xs of
+                Nil => y
+              | Cons (x, xs) => foldl (f (x, y)) xs
+    in
+        foldl
+    end
+end
+
+end

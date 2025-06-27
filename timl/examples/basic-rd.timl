@@ -1,0 +1,16 @@
+(* Basic types and function for the benchmark qsort_resource_decomposition *)
+
+structure Basic = struct
+
+datatype bool = true | false
+
+(* length-indexed list *)
+datatype list 'a : {Nat} =
+         Nil of list 'a {0}
+       | Cons {n : Nat} of 'a * list 'a {n} --> list 'a {n + 1}
+
+fun le_complex ['a] {r: Nat} (x: 'a, y: 'a, resource_guard : list unit {r})
+    return bool using $r =
+    builtin
+
+end

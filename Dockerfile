@@ -64,6 +64,26 @@ ADD ./experiment /home/experiment
 # Docker container
 ADD ./ocaml-benchmarks /home/ocaml-benchmarks
 
+# Install Standard ML for TiML
+RUN apt install -y smlnj libsmlnj-smlnj ml-yacc ml-ulex
+
+# Install the Z3 SMT solver version 4.4.1 for TiML and add its path to the PATH
+# environment variable
+WORKDIR /home/
+RUN wget https://github.com/Z3Prover/z3/releases/download/z3-4.4.1/z3-4.4.1-x64-ubuntu-14.04.zip
+RUN unzip z3-4.4.1-x64-ubuntu-14.04.zip && rm z3-4.4.1-x64-ubuntu-14.04.zip
+ENV PATH "$PATH:/home/z3-4.4.1-x64-ubuntu-14.04/bin"
+
+# Install ruby for TiML
+RUN apt install -y ruby-full
+
+# Add the TiML directory from a local machine to the Docker container
+ADD ./timl /home/timl
+
+# Build TiML
+WORKDIR /home/timl
+RUN make
+
 # Switch back to OCaml 4.14.0 from OCaml 4.06.0, which was used to build RaML
 RUN opam switch 4.14.0 && eval $(opam env)
 

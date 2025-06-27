@@ -24,3 +24,10 @@ README.pdf
 
 # Docker-related files
 *.tar.gz
+
+# TiML-related files
+.cm/
+main.cm
+*.x86-linux
+*.lisp
+*.smt2

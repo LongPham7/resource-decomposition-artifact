@@ -1,0 +1,122 @@
+structure BigOEvolve = struct
+open List
+
+(* The following is the thought process of evoluting [map] from using precise time spec to using big-O time spec. *)
+
+fun foldl ['a 'b] {m n : Nat} (f : 'a * 'b -- $m --> 'b) y (xs : list 'a {n}) return 'b using ($m + 4.0) * $n  =
+        case xs of
+            [] => y
+          | x :: xs => foldl f (f (x, y)) xs
+
+(* original version *)
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using $(m + 3) * $n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+
+(* rewrite the time spec equivalently using a function-sort index [g] introduced by [absidx] *)
+absidx g = fn m n => $(m + 3) * $n with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using g m n =
+    case ls of
+        Nil => Nil
+      | List.Cons (x, xs) => Cons (f x, map f xs)
+end
+
+(* refine [g]'s sort from [Fun 2] to [{g : Fun 2 | g <== (fn m n => $m * $n)}], specifying that [g] must be of Big-O class O(m*n)  *)
+absidx g : {g | g <== (fn m n => $m * $n)} = fn m n => $(m + 3) * $n with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using g m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+      
+(* sort [{g : Fun 2 | g <== (fn m n => $m * $n)}] can be written as [BigO (fn m n => $m * $n)] as a syntax sugar *)
+absidx g : BigO (fn m n => $m * $n) = fn m n => $(m + 3) * $n with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using g m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+
+(* now the magic: [g]'s definition can be inferred! *)
+absidx g : BigO (fn m n => $m * $n) = _ with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using g m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+
+(* [= _] in [absidx] can be omitted as a syntax sugar *)
+absidx g : BigO (fn m n => $m * $n) with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using g m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+       
+(* 2 can also be omitted *)
+absidx g : BigO (fn m n => $m * $n) with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using g m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+       
+(* the magic goes further: even [h]'s BigO class can be inferred! *)
+absidx h : BigO _ (* (fn m n => $m * $n) *) with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using h m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+
+(* another way to infer BigO class *)
+idx h_spec = _
+absidx h : BigO h_spec with
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list 'a {n}) return list 'b {n} using h m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+end
+
+end
+
+(* we can leave [g] transparent and later use module signature to seal it  *)
+structure BigOEvolveSealed :>
+                       sig
+                         idx g : BigO (fn m n => $m * $n)
+                       end =
+struct
+open List
+
+idx g_spec = _
+idx g : BigO (* (fn m n => $m * $n) *) g_spec = _
+val ['a 'b] map =
+ fn {m : Nat} (f : 'a -- $m --> 'b) =>
+    let
+      fun map {n : Nat} (ls : list 'a {n}) return list 'b {n} using g m n =
+            case ls of
+                Nil => Nil
+              | Cons (x, xs) => Cons (f x, map xs)
+    in
+        map
+    end
+
+end
+
+(* using module-scoped abstract index *)
+structure BigOEvolveSealed2 :>
+                       sig
+                         idx g : BigO (fn m n => $m * $n)
+                       end =
+struct
+open List
+
+idx g_spec = _
+absidx g : BigO g_spec = _
+fun map ['a 'b] {m n : Nat} (f : 'a -- $m --> 'b) (ls : list _ {n}) return list _ {n} using g m n =
+    case ls of
+        Nil => Nil
+      | Cons (x, xs) => Cons (f x, map f xs)
+
+end

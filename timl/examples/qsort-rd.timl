@@ -1,0 +1,49 @@
+(* Quick sort *)
+
+structure QSort = struct
+
+open Basic
+
+datatype plist 'a : {Nat} =
+         PList {p q : Nat} of list 'a {p} * list 'a {q} --> plist 'a {p + q}
+
+idx T_partition = fn m n => $n + ($m + 1.0) * $n
+fun partition ['a] {r len : Nat} (xs : list 'a {len}, pivot : 'a, resource_guard: list unit {r})
+    return plist 'a {len} using T_partition r len =
+  case xs of
+      [] => PList ([], [])
+    | hd :: tl =>
+          case partition (tl, pivot, resource_guard) of
+              PList (left, right) =>
+              if le_complex (hd, pivot, resource_guard) then
+                  PList (hd :: left, right)
+              else
+                  PList (left, hd :: right)
+
+idx T_append = fn n => 1.0 * $n
+fun append ['a] {len1 len2 : Nat} (xs : list 'a {len1}, ys : list 'a {len2})
+    return list 'a {len1 + len2} using T_append len1 =
+  case xs of
+      [] => ys
+    | hd :: tl => hd :: append (tl, ys)
+
+idx T_quicksort = fn m n => $n * ($n + 1.0) * ($m + 2.0) + 2.0 * $n
+fun quicksort ['a] {r len : Nat} (xs : list 'a {len}, resource_guard: list unit {r})
+    return list 'a {len} using T_quicksort r len =
+  case xs of
+      [] => []
+    | hd :: tl =>
+      (* need time annotation here to forget the two local index variables which are the lengths of
+        the two partitions. It is very hard for the typechecker to figure out how to replace these
+        two lengths with the total length of the input list *)
+      case partition (tl, hd, resource_guard)
+          return using $len * ($len + 1.0) * ($r + 2.0) + 2.0 * $len - 2.0 * $len * ($r + 1.0) of
+          PList (left, right) =>
+          let
+              val sorted_left = quicksort (left, resource_guard)
+              val sorted_right = quicksort (right, resource_guard)
+          in
+              append (sorted_left, hd :: sorted_right)
+          end
+
+end

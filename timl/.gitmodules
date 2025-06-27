@@ -1,0 +1,3 @@
+[submodule "compiler/sml-llvm"]
+	path = compiler/sml-llvm
+	url = https://github.com/stonebuddha/sml-llvm

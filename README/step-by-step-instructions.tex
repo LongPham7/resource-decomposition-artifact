@@ -39,7 +39,7 @@ the same OCaml source file:
 \paragraph{Static analysis}
 
 To perform AARA~\citep{Hoffmann2011a,Hoffmann2017} (implemented in the tool
-RaML~\citep{RaML}), go to the directory
+RaML~\citep{RaML}), go to this directory:
 \begin{verbatim}
 # cd /home/ocaml-benchmarks/
 \end{verbatim}
@@ -176,10 +176,10 @@ benchmarks in \labelcref{introduction:instantiation:1} and the benchmark
 
 \paragraph{Table of experiment results}
 
-To display the analysis of Bayesian data-driven analysis of all relevant
-benchmarks (i.e., the 13 benchmarks in \labelcref{introduction:instantiation:1}
-and the benchmark \quicksorttiml{} in \labelcref{introduction:instantiation:3}),
-run the following command in the directory \texttt{/home/experiment/}:
+To display the analysis time of Bayesian analysis of all relevant benchmarks
+(i.e., the 13 benchmarks in \labelcref{introduction:instantiation:1} and the
+benchmark \quicksorttiml{} in \labelcref{introduction:instantiation:3}), run the
+following command in the directory \texttt{/home/experiment/}:
 \begin{verbatim}
 # python3 -m run_analysis time
 \end{verbatim}
@@ -187,8 +187,8 @@ run the following command in the directory \texttt{/home/experiment/}:
 This analysis time is reported in the second-to-last column (titled ``Analysis
 Time Data-Driven'') of Table~1 in the paper.
 
-To display the percentages of sound resource-component bounds in all relevant
-benchmarks, run
+To calculate and display the percentages of sound resource-component bounds in
+all relevant benchmarks, run
 \begin{verbatim}
 # python3 -m run_analysis soundness all
 \end{verbatim}
@@ -250,7 +250,7 @@ edge.
 AARA is used to infer an overall cost bound of \kruskal{}'s resource-guarded
 program.
 %
-To run AARA, go to the directory \text{/home/ocaml-benchmarks/} and run
+To run AARA, go to the directory \texttt{/home/ocaml-benchmarks/} and run
 \begin{verbatim}
 # python3 raml/run_raml.py benchmark kruskal_algorithm counter
 \end{verbatim}
@@ -294,7 +294,10 @@ The inferred bound is translated to
 \begin{equation}
   f (d, \abs{V}, r_1, r_2) = 7 + 3.5 \abs{V} + d \cdot \abs{V} + 3.5 d \cdot \abs{V} \cdot r_1 + 1.5 r_2,
 \end{equation}
-which is reported in Eq.~(5.3) in the paper.
+which is parametric in the maximum degree $d$, the number of vertices $\abs{V}$,
+and two resource guards (i.e., $r_1$ and $r_2$).
+%
+This inferred bound is reported in Eq.~(5.3) in the paper.
 %
 The analysis time of RaML should be less than \qty{20}{\second}.
 
@@ -314,8 +317,102 @@ The generated plot is stored in the PDF file
 \subsection{Instantiation 3}
 \label{sec:step-by-step-instructions:instantiation-3}
 
+\labelcref{introduction:instantiation:3} integrates SMT-based semi-automatic
+resource analysis (TiML~\citep{WangWC17}) and Bayesian data-driven resource
+analysis.
+%
+This instantiation is evaluated on the benchmark \quicksorttiml{}, where the
+comparison function used inside quicksort has logarithmic cost in the maximum
+input natural numbers.
+
 \paragraph{SMT-based semi-automatic analysis}
 
-\paragraph{Bayesian analysis}
+In TiML~\citep{WangWC17}, a user manually annotates the source code of a
+Standard-ML program with a candidate cost bound.
+%
+The bound is then automatically verified by an SMT solver.
 
+To view the annotated Standard-ML program of \quicksorttiml{}, go to this
+directory:
+\begin{verbatim}
+# cd /home/timl
+\end{verbatim}
+%
+Then run
+\begin{verbatim}
+# cat examples/qsort-rd.timl
+\end{verbatim}
+%
+In the source file, the function \texttt{quicksort} is annotated with a candidate cost bound:
+\begin{verbatim}
+idx T_quicksort = fn m n => $n * ($n + 1.0) * ($m + 2.0) + 2.0 * $n
+\end{verbatim}
+%
+This bound is also displayed in Eq~(6.1) in the paper.
 
+To verify the candidate bound by TiML, run
+\begin{verbatim}
+# ./main.sh -l examples/basic-rd.timl examples/qsort-rd.timl
+\end{verbatim}
+%
+Its output reports that the typechecking is successful:
+\begin{verbatim}
+...
+Typechecking examples/qsort-rd.timl succeeded.
+...
+\end{verbatim}
+
+\paragraph{Data generation}
+
+To generate a dataset of resource-component measurements in \quicksorttiml{},
+go to this directory:
+\begin{verbatim}
+# cd /home/experiment
+\end{verbatim}
+%
+Then run
+\begin{verbatim}
+# python3 -m runtime_data_generation.runtime_data_generation benchmark quicksort_timl
+\end{verbatim}
+%
+The generated dataset is stored in the JSON file
+\begin{verbatim}
+/home/experiment/bin/quicksort_timl/bucket1/runtime_cost_data/runtime_cost_data.json
+\end{verbatim}
+
+\paragraph{Bayesian inference}
+
+We perform Bayesian inference to infer a bound of the logarithmic comparison cost in \quicksorttiml{}.
+%
+In the directory \texttt{/home/experiment}, run
+\begin{verbatim}
+# python3 -m run_model benchmark quicksort_timl
+\end{verbatim}
+%
+This command can take around \qty{150}{\second} to run.
+%
+Posterior samples are stored in the file
+\begin{verbatim}
+/home/experiment/bin/quicksort_timl/bucket1/counter0/model0/inference_result.json
+\end{verbatim}
+
+\paragraph{Display evaluation results}
+
+To display the percentage of sound resource-component bounds in
+\quicksorttiml{}, run
+\begin{verbatim}
+# python3 -m run_analysis soundness all
+\end{verbatim}
+%
+In the table printed out, the soundness percentage of \quicksorttiml{} should be
+70.1\%, which is reported in L1033 in the paper.
+
+To generate a plot of inferred bounds (Figure~6), run
+\begin{verbatim}
+# python3 -m visualization.visualization quicksort_timl
+\end{verbatim}
+%
+The generated plot is stored in the PDf file
+\begin{verbatim}
+/home/experiment/images/quicksort_timl/bucket1/posterior_distributions.pdf
+\end{verbatim}
