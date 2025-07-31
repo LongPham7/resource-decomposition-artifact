@@ -31,3 +31,6 @@ main.cm
 *.x86-linux
 *.lisp
 *.smt2
+
+# Files related to reviews and responses
+reviews/
