@@ -2,4 +2,23 @@
 
 \section{Hardware Dependencies}
 
-The artifact has no particular hardware dependencies.
+The Docker image can only run on x86 architectures.
+%
+The image contains pre-built releases of
+\begin{enumerate}
+  \item A linear-program solver CLP~\citep{CLP}, which is used inside an
+        implementation RaML~\citep{RaML,Hoffmann2017} of the static resource
+        analysis AARA~\citep{Hofmann2003,Hoffmann2011a,Hoffmann2022}
+        (\labelcref{introduction:instantiation:1,introduction:instantiation:2});
+        and
+  \item An SMT solver Z3~\citep{DeMoura2008}, which is used inside the
+        semi-automatic resource-analysis tool TiML~\citep{WangWC17}
+        (\labelcref{introduction:instantiation:3}).
+\end{enumerate}
+%
+These releases, which are downloaded from their respective GitHub repositories,
+are specific to x86 architectures.
+%
+Unfortunately, the specific versions of CLP and Z3 used in the artifact do not
+have corresponding pre-built releases for other architecture (e.g., ARM
+architectures used in Apple silicon).

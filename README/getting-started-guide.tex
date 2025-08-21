@@ -56,11 +56,11 @@ This section demonstrates the first instantiation of resource decomposition
 (\labelcref{introduction:instantiation:1}), which integrates static and Bayesian
 data-driven resource analyses.
 %
-The static part runs a program-analysis tool RaML~\citep{RaML}.
+The static part runs a program-analysis tool RaML~\citep{RaML,Hoffmann2017}.
 %
 It implements type-based static resource analysis Automatic Amortized Resource
-Analysis (AARA)~\citep{Hoffmann2011a,Hoffmann2017} and automatically infers
-polynomial cost bounds of input OCaml programs.
+Analysis (AARA)~\citep{Hofmann2003,Hoffmann2011a,Hoffmann2022} and automatically
+infers polynomial cost bounds of input OCaml programs.
 %
 The data-driven part, on the other hand, runs Bayesian inference to
 statistically infer a symbolic bound of a resource component using its
@@ -106,7 +106,7 @@ To invoke RaML on \mergesort{}, run a python script:
 %
 It prints out the inference result of static resource analysis:
 \begin{Verbatim}[fontsize=\footnotesize]
-== merge_sort :
+  == merge_sort :
 
   int list -> int list
 
@@ -122,14 +122,14 @@ It prints out the inference result of static resource analysis:
   where
   M is the number of ::-nodes of the argument
 
---
+  --
   Mode:          upper
   Metric:        ticks
   Degree:        2
   Run time:      0.13 seconds
   #Constraints:  777
 
-====
+  ====
 \end{Verbatim}
 %
 In the middle of the displayed inference result, we can find a quadratic cost
@@ -188,7 +188,7 @@ $P_{\mathrm{rg}}(x, r)$, invoke RaML by running
 %
 It prints out the inference result:
 \begin{Verbatim}[fontsize=\footnotesize]
-== merge_sort :
+  == merge_sort :
 
   [int list; int list * 'a] -> int list * (int list * 'a)
 
@@ -204,14 +204,14 @@ It prints out the inference result:
   L is the number of ::-nodes of the 1st component of the 2nd component of the argument
   M is the number of ::-nodes of the 1st component of the argument
 
---
+  --
   Mode:          upper
   Metric:        ticks
   Degree:        2
   Run time:      0.28 seconds
   #Constraints:  1192
 
-====
+  ====
 \end{Verbatim}
 %
 Here, an inferred cost bound is
@@ -350,3 +350,20 @@ slightly from those reported in Table~1.
 %
 These deviations do not affect the key conclusion of the paper, namely the
 effectiveness of the resource-decomposition framework.
+
+In this table, the row for the benchmark \quicksorttiml{} is
+\begin{verbatim}
+quicksort_timl                N/A                0           100.0%         70.1%
+\end{verbatim}
+%
+It states that the result of Conventional AARA (in the second column of the
+table) is non-applicable (N/A).
+%
+Our evaluation goal of resource decomposition is to empirically demonstrate that
+it performs better than each constituent resource-analysis techniques.
+%
+Since \labelcref{introduction:instantiation:3} integrates TiML and Bayesian
+analysis, we do not aim to show that resource decomposition performs better than
+Conventional AARA on the benchmark \quicksorttiml{}.
+%
+Hence, the entry for \quicksorttiml{} in the table shows N/A.

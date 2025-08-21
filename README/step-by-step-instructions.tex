@@ -7,7 +7,7 @@
 \label{sec:step-by-step-instructions:instantiation-1}
 
 \labelcref{introduction:instantiation:1} integrates type-based static resource
-analysis AARA~\citep{Hoffmann2011a,Hoffmann2017} and Bayesian data-driven
+analysis AARA~\citep{Hofmann2003,Hoffmann2011a,Hoffmann2022} and Bayesian data-driven
 resource analysis.
 %
 This instantiation is evaluated on the 13 benchmark programs in Table~1.
@@ -37,8 +37,8 @@ source file:
 
 \paragraph{Static analysis}
 
-To perform AARA~\citep{Hoffmann2011a,Hoffmann2017} implemented in
-RaML~\citep{RaML}, go to this directory:
+To perform AARA~\citep{Hofmann2003,Hoffmann2011a,Hoffmann2022} implemented in
+RaML~\citep{RaML,Hoffmann2017}, go to this directory:
 \begin{verbatim}
 # cd /home/ocaml-benchmarks/
 \end{verbatim}
@@ -229,8 +229,8 @@ $ docker cp resource-decomposition:<source-path> <destination-path>
 \label{sec:step-by-step-instructions:instantiation-2}
 
 \labelcref{introduction:instantiation:2} integrates static resource analysis
-(AARA~\citep{Hoffmann2011a,Hoffmann2017}) and interactive resource analysis
-(Iris with time credits~\citep{Chargueraud2019}).
+(AARA~\citep{Hofmann2003,Hoffmann2011a,Hoffmann2022}) and interactive resource
+analysis (Iris with time credits~\citep{Chargueraud2019}).
 %
 This instantiation is evaluated on Kruskal's algorithm for minimum spanning
 trees.
@@ -247,7 +247,7 @@ To run AARA, go to the directory \texttt{/home/ocaml-benchmarks/} and run
 %
 It returns an inference result:
 \begin{Verbatim}[fontsize=\footnotesize]
-== kruskal_algorithm :
+  == kruskal_algorithm :
 
   [(int * (int * float) list) list;
   ('a * 'b list) * ('c * int list)] ->
@@ -270,14 +270,14 @@ It returns an inference result:
   M is the number of ::-nodes of the 1st component of the argument
   L is the maximal number of ::-nodes of the 2nd component in the ::-nodes of the 1st ...
 
---
+  --
   Mode:          upper
   Metric:        ticks
   Degree:        3
   Run time:      16.02 seconds
   #Constraints:  57606
 
-====
+  ====
 \end{Verbatim}
 %
 The inferred bound is translated to
@@ -397,7 +397,7 @@ To display the percentage of sound resource-component bounds in
 \end{verbatim}
 %
 The table reports that the soundness percentage of \quicksorttiml{} is 70.1\%,
-which is also reported in L1033 in the paper.
+which is also reported in \S6 of the paper.
 
 To generate plots of inferred bounds (Figure~6), run
 \begin{verbatim}
