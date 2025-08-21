@@ -123,15 +123,30 @@ and the number of resource components):
 \end{verbatim}
 
 \subsection{Build the Docker Image}
+\label{sec:reusability-guide:build-docker-image}
 
-To build this artifact, clone this GitHub repository:
+To build this artifact, first extract the archived and compressed file
+\begin{verbatim}
+resource-decomposition-artifact.tar.gz
+\end{verbatim}
+that comes with the artifact on Zenodo.
+%
+To do so, on your local machine, run the command
+\begin{verbatim}
+$ tar -xvzf resource-decomposition-artifact.tar.gz
+\end{verbatim}
+%
+It creates a directory \texttt{resource-decomposition-artifact} in the current
+working directory.
+
+Alternatively, you can clone this GitHub repository:
 \begin{center}
   \url{https://github.com/LongPham7/resource-decomposition-artifact}.
 \end{center}
 %
-In addition to the code for building the artifact, the GitHub repository
-contains the \LaTeX{} source files of this \texttt{README.pdf} document.
-%
+In addition to the code for building the artifact, the repository contains the
+\LaTeX{} source files of this \texttt{README.pdf} document.
+
 In the root directory of the repository, run
 \begin{verbatim}
 $ docker build -t resource-decomposition .
